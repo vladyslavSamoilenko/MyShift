@@ -1,4 +1,8 @@
 package com.example.backend.entities;
 
-public class Role {
+import lombok.Getter;
+
+@Getter
+public enum Role {
+    ADMIN, MANAGER, WORKER;
 }

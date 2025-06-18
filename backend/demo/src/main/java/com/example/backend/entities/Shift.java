@@ -27,5 +27,5 @@ public class Shift {
     private LocalTime endTime;
 
     @ManyToMany
-    private Set<Employee> assinedEmployees;
+    private Set<Employee> assignedEmployees;
 }

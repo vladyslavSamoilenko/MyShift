@@ -17,7 +17,10 @@ public class Employee {
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
 
     @Column(nullable = false)
     private String email;
@@ -25,10 +28,11 @@ public class Employee {
     @Column(nullable = false)
     private String phone;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "employee")
     private User user;
 
     @ManyToMany(mappedBy = "assignedEmployees")
+    @JoinColumn(name = "shift_id")
     private Set<Shift> shift;
 
 

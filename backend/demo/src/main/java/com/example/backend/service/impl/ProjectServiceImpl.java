@@ -1,9 +1,11 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.mapper.ProjectMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
 import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.entities.Project;
 import com.example.backend.model.exception.NotFoundException;
+import com.example.backend.model.request.post.ProjectRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
@@ -16,18 +18,24 @@ import org.springframework.stereotype.Service;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
 
     @Override
     public GeneralResponse<ProjectDTO> getById(@NotNull Integer id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(id)));
 
-        ProjectDTO projectDTO = ProjectDTO.builder()
-                .id(project.getId())
-                .name(project.getName())
-                .description(project.getDescription())
-                .shifts(project.getShifts())
-                .build();
+        ProjectDTO projectDTO = projectMapper.toProjectDTO(project);
+
+        return GeneralResponse.createSuccessful(projectDTO);
+    }
+
+    @Override
+    public GeneralResponse<ProjectDTO> createProject(@NotNull ProjectRequest projectRequest) {
+        Project project = projectMapper.createProject(projectRequest);
+
+        Project savedProject = projectRepository.save(project);
+        ProjectDTO projectDTO = projectMapper.toProjectDTO(savedProject);
 
         return GeneralResponse.createSuccessful(projectDTO);
     }

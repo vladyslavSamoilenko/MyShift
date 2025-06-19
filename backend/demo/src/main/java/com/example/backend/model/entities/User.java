@@ -1,19 +1,17 @@
-package com.example.backend.entities;
+package com.example.backend.model.entities;
 
-import jakarta.annotation.Nullable;
+import com.example.backend.model.enums.Role;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "users", schema = "my_shift")
 public class User {
 
     @Id

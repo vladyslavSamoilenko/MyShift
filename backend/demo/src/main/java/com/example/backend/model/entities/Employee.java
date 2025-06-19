@@ -1,4 +1,4 @@
-package com.example.backend.entities;
+package com.example.backend.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "employee")
+@Table(name = "employee", schema = "my_shift")
 public class Employee {
 
     @Id
@@ -32,7 +32,6 @@ public class Employee {
     private User user;
 
     @ManyToMany(mappedBy = "assignedEmployees")
-    @JoinColumn(name = "shift_id")
     private Set<Shift> shift;
 
 

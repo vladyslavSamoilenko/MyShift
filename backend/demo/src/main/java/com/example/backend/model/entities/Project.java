@@ -1,4 +1,4 @@
-package com.example.backend.entities;
+package com.example.backend.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "project", schema = "my_shift")
 public class Project {
 
     @Id

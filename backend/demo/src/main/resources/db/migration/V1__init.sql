@@ -23,6 +23,8 @@ CREATE TABLE project (
        description VARCHAR(255) NOT NULL
 );
 
+INSERT INTO project (name, description) values ('Test name', 'test description');
+
 CREATE TABLE shifts (
        id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
        shift_date DATE NOT NULL,

@@ -24,4 +24,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<Shift> shifts;
+
+    @Column(nullable = false)
+    private Boolean deleted = false;
 }

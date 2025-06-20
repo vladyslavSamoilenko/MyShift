@@ -19,5 +19,6 @@ public class ProjectDTO implements Serializable {
     private String name;
     private String description;
     private List<Shift> shifts;
+    private boolean isDeleted;
 
 }

@@ -24,7 +24,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public GeneralResponse<ProjectDTO> getById(@NotNull Integer id) {
-        Project project = projectRepository.findById(id)
+        Project project = projectRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(id)));
 
         ProjectDTO projectDTO = projectMapper.toProjectDTO(project);
@@ -47,13 +47,21 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public GeneralResponse<ProjectDTO> updateProject(@NotNull Integer projectId,@NotNull UpdateProjectRequest request) {
-        Project project = projectRepository.findById(projectId)
+        Project project = projectRepository.findByIdAndDeletedFalse(projectId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(projectId)));
         projectMapper.updateProject(project, request);
         project = projectRepository.save(project);
 
         ProjectDTO projectDTO = projectMapper.toProjectDTO(project);
         return GeneralResponse.createSuccessful(projectDTO);
+    }
+
+    @Override
+    public void softDeleteProject(@NotNull Integer projectId) {
+        Project project = projectRepository.findByIdAndDeletedFalse(projectId)
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(projectId)));
+        project.setDeleted(true);
+        projectRepository.save(project);
     }
 
 

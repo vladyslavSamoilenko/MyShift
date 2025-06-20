@@ -47,4 +47,12 @@ public class ProjectsController {
         GeneralResponse<ProjectDTO> updateProject = projectService.updateProject(id, request);
         return ResponseEntity.ok(updateProject);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> softDeletedById(@PathVariable(name = "id") Integer projectId ){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        projectService.softDeleteProject(projectId);
+        return ResponseEntity.ok().build();
+    }
 }

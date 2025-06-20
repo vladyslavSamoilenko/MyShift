@@ -8,7 +8,9 @@ import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
 import com.example.backend.utils.ApiUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,7 @@ public class ProjectsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<GeneralResponse<ProjectDTO>> createProject(@RequestBody ProjectRequest projectRequest){
+    public ResponseEntity<GeneralResponse<ProjectDTO>> createProject(@RequestBody @Valid ProjectRequest projectRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         GeneralResponse<ProjectDTO> response = projectService.createProject(projectRequest);

@@ -4,6 +4,7 @@ import com.example.backend.mapper.ProjectMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
 import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.entities.Project;
+import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
 import com.example.backend.model.request.post.ProjectRequest;
 import com.example.backend.model.response.GeneralResponse;
@@ -32,8 +33,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public GeneralResponse<ProjectDTO> createProject(@NotNull ProjectRequest projectRequest) {
-        Project project = projectMapper.createProject(projectRequest);
+        if(projectRepository.existsByName(projectRequest.getName())){
+            throw new DataExistException(ApiErrorMessage.PROJECT_ALREADY_EXIST.getMessage(projectRequest.getName()));
+        }
 
+        Project project = projectMapper.createProject(projectRequest);
         Project savedProject = projectRepository.save(project);
         ProjectDTO projectDTO = projectMapper.toProjectDTO(savedProject);
 

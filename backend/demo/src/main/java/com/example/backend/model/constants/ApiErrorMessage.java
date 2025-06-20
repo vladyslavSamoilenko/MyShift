@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ApiErrorMessage {
-    PROJECT_NOT_FOUND_BY_ID("Project not found by id: %s");
+    PROJECT_NOT_FOUND_BY_ID("Project not found by id: %s"),
+    PROJECT_ALREADY_EXIST("Project with Name: %s already exist");
 
     private final String message;
 

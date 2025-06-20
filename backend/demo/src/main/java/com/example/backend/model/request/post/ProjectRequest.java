@@ -1,6 +1,7 @@
 package com.example.backend.model.request.post;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectRequest implements Serializable {
+
+    @NotBlank(message = "Must contains name")
     private String name;
+    @NotBlank(message = "must contains description")
     private String description;
 }

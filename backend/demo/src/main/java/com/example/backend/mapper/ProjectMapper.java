@@ -4,9 +4,11 @@ package com.example.backend.mapper;
 import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.entities.Project;
 import com.example.backend.model.request.post.ProjectRequest;
+import com.example.backend.model.request.post.UpdateProjectRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
@@ -23,4 +25,7 @@ public interface ProjectMapper {
 
     @Mapping(target = "id", ignore = true)
     Project createProject(ProjectRequest projectRequest);
+
+    @Mapping(target = "id", ignore = true)
+    void updateProject(@MappingTarget Project project, UpdateProjectRequest request);
 }

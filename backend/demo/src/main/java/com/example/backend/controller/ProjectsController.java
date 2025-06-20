@@ -4,6 +4,7 @@ package com.example.backend.controller;
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.request.post.ProjectRequest;
+import com.example.backend.model.request.post.UpdateProjectRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
@@ -37,5 +38,13 @@ public class ProjectsController {
 
         GeneralResponse<ProjectDTO> response = projectService.createProject(projectRequest);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GeneralResponse<ProjectDTO>> updateProjectById(@PathVariable(name = "id") Integer id, @RequestBody @Valid UpdateProjectRequest request){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        GeneralResponse<ProjectDTO> updateProject = projectService.updateProject(id, request);
+        return ResponseEntity.ok(updateProject);
     }
 }

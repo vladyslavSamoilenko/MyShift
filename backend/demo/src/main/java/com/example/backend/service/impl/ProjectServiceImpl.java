@@ -7,6 +7,7 @@ import com.example.backend.model.entities.Project;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
 import com.example.backend.model.request.post.ProjectRequest;
+import com.example.backend.model.request.post.UpdateProjectRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
@@ -41,6 +42,17 @@ public class ProjectServiceImpl implements ProjectService {
         Project savedProject = projectRepository.save(project);
         ProjectDTO projectDTO = projectMapper.toProjectDTO(savedProject);
 
+        return GeneralResponse.createSuccessful(projectDTO);
+    }
+
+    @Override
+    public GeneralResponse<ProjectDTO> updateProject(@NotNull Integer projectId,@NotNull UpdateProjectRequest request) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(projectId)));
+        projectMapper.updateProject(project, request);
+        project = projectRepository.save(project);
+
+        ProjectDTO projectDTO = projectMapper.toProjectDTO(project);
         return GeneralResponse.createSuccessful(projectDTO);
     }
 

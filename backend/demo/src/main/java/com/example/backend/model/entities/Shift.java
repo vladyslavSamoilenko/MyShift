@@ -27,7 +27,7 @@ public class Shift {
     private LocalTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = "project_id") // это соответствует твоему SQL
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToMany

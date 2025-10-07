@@ -1,6 +1,7 @@
 package com.example.backend.model.entities;
 
 import com.example.backend.model.enums.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,12 @@ public class User {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
 }

@@ -28,11 +28,7 @@ public class Employee {
     @Column(nullable = false)
     private String phone;
 
-    @OneToOne(mappedBy = "employee")
-    private User user;
-
-    @ManyToMany(mappedBy = "assignedEmployees")
-    private Set<Shift> shift;
-
+    @Column(nullable = false)
+    private Boolean deleted = false;
 
 }

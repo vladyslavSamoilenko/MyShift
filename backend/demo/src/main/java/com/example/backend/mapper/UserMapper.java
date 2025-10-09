@@ -4,6 +4,7 @@ import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.Employee;
 import com.example.backend.model.entities.User;
 import com.example.backend.model.request.post.EmployeeRequest;
+import com.example.backend.model.request.post.UserRequest;
 import com.example.backend.model.request.post.UserUpdateRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.Mapper;
@@ -26,7 +27,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "employee", expression = "java(createEmployeeFromId(UserDTO.getEmployeeId()))")
-    User createUser(UserDTO userDTO);
+    User createUser(UserRequest userRequest);
 
     @Mapping(target = "id", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest userUpdateRequest);

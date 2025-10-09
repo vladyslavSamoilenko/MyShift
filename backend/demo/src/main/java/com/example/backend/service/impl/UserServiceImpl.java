@@ -4,6 +4,7 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
 import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.User;
+import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
 import com.example.backend.model.request.post.UserRequest;
 import com.example.backend.model.request.post.UserUpdateRequest;
@@ -31,7 +32,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public GeneralResponse<UserDTO> createUser(UserRequest userRequest) {
-        return null;
+        if (userRepository.existsUserByEmail(userRequest.getEmail())){
+            throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS_BY_EMAIL.getMessage(userRequest.getEmail()));
+        }
+
+        User user = userMapper.createUser(userRequest);
+        User savedUser = userRepository.save(user);
+        UserDTO userDTO = userMapper.toUserDTO(savedUser);
+        return GeneralResponse.createSuccessful(userDTO);
     }
 
     @Override

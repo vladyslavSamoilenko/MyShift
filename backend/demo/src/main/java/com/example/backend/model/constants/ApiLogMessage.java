@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum ApiLogMessage {
     PROJECT_INFO_BY_ID("Receiving project with ID: {}"),
     NAME_OF_CURRENT_METHOD("Current method: {}"),
-    EMPLOYEE_INFO_BY_ID("Receiving employee with ID: {}")
+    EMPLOYEE_INFO_BY_ID("Receiving employee with ID: {}"),
+    USER_INFO_BY_ID("Receiving user with ID: {}")
     ;
 
     private final String message;

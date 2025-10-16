@@ -26,16 +26,10 @@ public interface UserMapper {
     UserDTO toUserDTO(User user);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "employee", expression = "java(createEmployeeFromId(UserDTO.getEmployeeId()))")
     User createUser(UserRequest userRequest);
 
     @Mapping(target = "id", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
 
-    default Employee createEmployeeFromId(Integer id){
-        if (id == null) return null;
-        Employee employee = new Employee();
-        employee.setId(id);
-        return employee;
-    }
+
 }

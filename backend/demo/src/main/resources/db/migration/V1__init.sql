@@ -3,7 +3,8 @@ CREATE TABLE employee (
         first_name VARCHAR(255) NOT NULL,
         last_name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
-        phone VARCHAR(255) NOT NULL
+        phone VARCHAR(255) NOT NULL,
+        deleted BOOLEAN not null default false
 );
 
 CREATE TABLE users (
@@ -13,6 +14,7 @@ CREATE TABLE users (
        role VARCHAR(50) NOT NULL,
        employee_id INT UNIQUE,
        created_at TIMESTAMP NOT NULL,
+       deleted BOOLEAN not null default false,
 
        CONSTRAINT fk_user_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
 );
@@ -20,7 +22,9 @@ CREATE TABLE users (
 CREATE TABLE project (
        id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
        name VARCHAR(50) NOT NULL,
-       description VARCHAR(255) NOT NULL
+       description VARCHAR(255) NOT NULL,
+       deleted BOOLEAN not null default false
+
 );
 
 INSERT INTO project (name, description) values ('Test name', 'test description');
@@ -42,3 +46,11 @@ CREATE TABLE shift_employee (
       CONSTRAINT fk_shift_employee_shift FOREIGN KEY (shift_id) REFERENCES shifts(id),
       CONSTRAINT fk_shift_employee_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
 );
+
+CREATE TABLE project_users(
+    project_id INT NOT NULL,
+    employee_id INT NOT NULL,
+    PRIMARY KEY (project_id, employee_id),
+    CONSTRAINT fk_project_project FOREIGN KEY (project_id) REFERENCES project(id),
+    CONSTRAINT fk_project_user FOREIGN KEY (employee_id) REFERENCES users(id)
+)

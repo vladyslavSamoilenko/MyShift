@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequest {
-    @NotBlank(message = "Must contains employee id")
-    private Integer id;
     @NotBlank(message = "Must contains employee email")
     private String email;
     @NotBlank(message = "Must contains employee password")

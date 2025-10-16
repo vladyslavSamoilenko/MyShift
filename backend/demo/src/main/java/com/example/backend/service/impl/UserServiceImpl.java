@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void softDelete(Integer userID) {
-
+        User user = userRepository.findUserById(userID).orElseThrow(() -> new NotFoundException(ApiErrorMessage.EMPLOYEE_NOT_FOUND_BY_ID.getMessage(userID)));
+        user.setDeleted(true);
+        userRepository.save(user);
     }
 }

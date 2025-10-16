@@ -1,11 +1,37 @@
 package com.example.backend.controller;
 
+import com.example.backend.model.constants.ApiLogMessage;
+import com.example.backend.model.dto.UserDTO;
+import com.example.backend.model.request.post.UserRequest;
+import com.example.backend.model.response.GeneralResponse;
+import com.example.backend.service.UserService;
+import com.example.backend.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UsersController {
+
+    private final UserService userService;
+
+    @GetMapping("/{id}")
+    private ResponseEntity<GeneralResponse<UserDTO>> getById(@PathVariable(name = "id") Integer id){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        GeneralResponse<UserDTO> response =userService.getById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/create")
+    private ResponseEntity<GeneralResponse<UserDTO>> createUser(@RequestBody UserRequest userRequest){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+        GeneralResponse<UserDTO> response = userService.createUser(userRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }

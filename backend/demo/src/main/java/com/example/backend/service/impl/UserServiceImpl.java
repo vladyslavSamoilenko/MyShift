@@ -44,7 +44,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public GeneralResponse<UserDTO> updateUser(Integer userId, UserUpdateRequest userUpdateRequest) {
-        return null;
+        User user = userRepository.findUserById(userId).orElseThrow(() -> new NotFoundException(
+                ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId)));
+        userMapper.updateUser(user, userUpdateRequest);
+        user = userRepository.save(user);
+
+        UserDTO userDTO = userMapper.toUserDTO(user);
+        return GeneralResponse.createSuccessful(userDTO);
     }
 
     @Override

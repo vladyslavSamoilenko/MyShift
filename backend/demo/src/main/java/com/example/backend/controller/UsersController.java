@@ -3,9 +3,11 @@ package com.example.backend.controller;
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.request.post.UserRequest;
+import com.example.backend.model.request.post.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.service.UserService;
 import com.example.backend.utils.ApiUtils;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,13 @@ public class UsersController {
     private ResponseEntity<GeneralResponse<UserDTO>> createUser(@RequestBody UserRequest userRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         GeneralResponse<UserDTO> response = userService.createUser(userRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    private ResponseEntity<GeneralResponse<UserDTO>> updateUser(@NotNull @PathVariable(name = "id") Integer id,@RequestBody UserUpdateRequest userUpdateRequest){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+        GeneralResponse<UserDTO> response = userService.updateUser(id, userUpdateRequest);
         return ResponseEntity.ok(response);
     }
 

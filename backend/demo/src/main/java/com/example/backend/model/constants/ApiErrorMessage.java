@@ -12,7 +12,9 @@ public enum ApiErrorMessage {
     PROJECT_ALREADY_EXIST("Project with Name: %s already exist"),
     EMPLOYEE_NOT_FOUND_BY_ID("Employee not found by id: %s"),
     EMPLOYEE_ALREADY_EXIST_BY_PHONE("Employee with phone: %s already exist"),
-    EMPLOYEE_ALREADY_EXIST_BY_EMAIL("Employee with email: %s already exist");
+    EMPLOYEE_ALREADY_EXIST_BY_EMAIL("Employee with email: %s already exist"),
+    USER_NOT_FOUND_BY_ID("User not found by id: %s"),
+    USER_ALREADY_EXISTS_BY_EMAIL("User not found by id: %s");
 
 
     private final String message;

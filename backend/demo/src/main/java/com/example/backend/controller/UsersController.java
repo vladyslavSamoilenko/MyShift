@@ -29,12 +29,12 @@ public class UsersController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/create")
-    private ResponseEntity<GeneralResponse<UserDTO>> createUser(@RequestBody UserRequest userRequest){
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
-        GeneralResponse<UserDTO> response = userService.createUser(userRequest);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/create")
+//    private ResponseEntity<GeneralResponse<UserDTO>> createUser(@RequestBody UserRequest userRequest){
+//        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+//        GeneralResponse<UserDTO> response = userService.createUser(userRequest);
+//        return ResponseEntity.ok(response);
+//    }
 
     @PutMapping("/{id}")
     private ResponseEntity<GeneralResponse<UserDTO>> updateUser(@NotNull @PathVariable(name = "id") Integer id,@RequestBody UserUpdateRequest userUpdateRequest){

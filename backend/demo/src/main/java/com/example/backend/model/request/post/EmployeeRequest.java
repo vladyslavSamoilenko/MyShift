@@ -19,4 +19,6 @@ public class EmployeeRequest implements Serializable {
     private String phone;
     @NotBlank(message = "Must contains email")
     private String email;
+    @NotBlank(message = "Must contains employee role: ADMIN, MANAGER, WORKER")
+    private String role;
 }

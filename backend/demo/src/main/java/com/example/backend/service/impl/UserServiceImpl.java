@@ -6,7 +6,6 @@ import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.User;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
-import com.example.backend.model.request.post.UserRequest;
 import com.example.backend.model.request.post.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.UserRepository;
@@ -14,6 +13,8 @@ import com.example.backend.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GeneralResponse<UserDTO> createUser(UserRequest userRequest) {
-        if (userRepository.existsUserByEmail(userRequest.getEmail())){
-            throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS_BY_EMAIL.getMessage(userRequest.getEmail()));
+    public GeneralResponse<UserDTO> createUser(User user) {
+        if (userRepository.existsUserByEmail(user.getEmail())) {
+            throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS_BY_EMAIL.getMessage(user.getEmail()));
         }
 
-        User user = userMapper.createUser(userRequest);
         User savedUser = userRepository.save(user);
         UserDTO userDTO = userMapper.toUserDTO(savedUser);
         return GeneralResponse.createSuccessful(userDTO);
@@ -58,5 +58,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(userID).orElseThrow(() -> new NotFoundException(ApiErrorMessage.EMPLOYEE_NOT_FOUND_BY_ID.getMessage(userID)));
         user.setDeleted(true);
         userRepository.save(user);
+    }
+
+    public String createDefaultPassword() {
+        char [] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%&".toCharArray();
+        Random random = new Random();
+
+        StringBuilder password = new StringBuilder();
+        for(int i = 0; i < 12; i++){
+            int randomIndex = random.nextInt(68);
+            password.append(chars[randomIndex]);
+        }
+        return password.toString();
+
     }
 }

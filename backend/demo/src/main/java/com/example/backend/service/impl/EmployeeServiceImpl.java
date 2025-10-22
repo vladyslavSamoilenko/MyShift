@@ -1,7 +1,6 @@
 package com.example.backend.service.impl;
 
 import com.example.backend.mapper.EmployeeMapper;
-import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
 import com.example.backend.model.dto.EmployeeDTO;
 import com.example.backend.model.entities.Employee;
@@ -9,8 +8,8 @@ import com.example.backend.model.entities.User;
 import com.example.backend.model.enums.Role;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
-import com.example.backend.model.request.post.EmployeeRequest;
-import com.example.backend.model.request.post.UpdateEmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.EmployeeRepository;
 import com.example.backend.service.EmployeeService;
@@ -27,7 +26,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @Override
     public GeneralResponse<EmployeeDTO> getById(@NotNull Integer id) {

@@ -3,15 +3,13 @@ package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.ProjectDTO;
-import com.example.backend.model.request.post.ProjectRequest;
-import com.example.backend.model.request.post.UpdateProjectRequest;
+import com.example.backend.model.request.post.projectRequests.ProjectRequest;
+import com.example.backend.model.request.post.projectRequests.UpdateProjectRequest;
 import com.example.backend.model.response.GeneralResponse;
-import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
 import com.example.backend.utils.ApiUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

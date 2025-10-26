@@ -1,6 +1,5 @@
 package com.example.backend.model.response;
 
-import ch.qos.logback.core.util.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

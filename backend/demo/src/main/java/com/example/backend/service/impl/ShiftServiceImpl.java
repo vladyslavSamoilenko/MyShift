@@ -36,7 +36,6 @@ public class ShiftServiceImpl implements ShiftService {
     private final ShiftMapper shiftMapper;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public GeneralResponse<ShiftDTO> getById(@NotNull Integer id) {
@@ -48,7 +47,7 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public GeneralResponse<ShiftDTO> createShift(ShiftRequest shiftRequest) {
-        if(shiftRepository.existsShiftByShiftDateAndUser_Id(LocalDate.parse(shiftRequest.getShiftDate(), formatter), shiftRequest.getUserId())){
+        if(shiftRepository.existsShiftByShiftDateAndUser_Id(LocalDate.parse(shiftRequest.getShiftDate()), shiftRequest.getUserId())){
             throw new DataExistException(ApiErrorMessage.SHIFT_ALREADY_EXISTS_AT_THIS_DAY_FOR_USER_ID.getMessage(shiftRequest.getUserId()));
         }
         Shift shift = shiftMapper.toShift(shiftRequest);
@@ -101,7 +100,7 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public GeneralResponse<List<ShiftDTO>> getShiftsByProjectIdAndShiftDate(Integer id, ShiftDateRequest shiftDateRequest) {
-        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_IdAndShiftDate(id, LocalDate.parse(shiftDateRequest.getLocalDate(), formatter));
+        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_IdAndShiftDate(id, LocalDate.parse(shiftDateRequest.getLocalDate()));
         List<ShiftDTO> listShift = shifts
                 .orElse(Collections.emptyList())
                 .stream()

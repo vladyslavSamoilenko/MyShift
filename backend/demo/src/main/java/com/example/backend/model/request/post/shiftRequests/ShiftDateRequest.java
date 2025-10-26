@@ -12,5 +12,5 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ShiftDateRequest {
     @NotBlank(message = "Must contains shift date")
-    private LocalDate localDate;
+    private String localDate;
 }

@@ -15,7 +15,6 @@ public interface ShiftRepository extends JpaRepository<Shift, Integer> {
 
     Optional<List<Shift>> findShiftsByProject_IdAndShiftDate(Integer projectId, LocalDate shiftDate);
 
-    void deleteShiftByUser_IdAndShiftDate(@NotNull Integer userId,
-                                          @NotNull LocalDate shiftDate);
+    void deleteShiftByUser_IdAndShiftDate(Integer userId, LocalDate shiftDate);
 
 }

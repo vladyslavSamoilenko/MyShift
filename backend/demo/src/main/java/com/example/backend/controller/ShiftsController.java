@@ -44,8 +44,8 @@ public class ShiftsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShift(@PathVariable Integer id, @RequestBody ShiftDateRequest deleteDateRequest){
-        shiftService.deleteShift(id, deleteDateRequest.getLocalDate());
+    public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShift(@PathVariable Integer id, @RequestBody ShiftDateRequest deleteDateRequest) {
+        shiftService.deleteShift(id, deleteDateRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -63,7 +63,7 @@ public class ShiftsController {
 
     @GetMapping("/list/ProjectIdAndDate/{id}")
     public ResponseEntity<GeneralResponse<List<ShiftDTO>>> getShiftsByProjectIdAndShiftDate(@PathVariable(name = "id") Integer id,@RequestBody ShiftDateRequest shiftDateRequest){
-        GeneralResponse<List<ShiftDTO>> response = shiftService.getShiftsByProjectIdAndShiftDate(id,shiftDateRequest.getLocalDate());
+        GeneralResponse<List<ShiftDTO>> response = shiftService.getShiftsByProjectIdAndShiftDate(id,shiftDateRequest);
         return ResponseEntity.ok(response);
     }
 }

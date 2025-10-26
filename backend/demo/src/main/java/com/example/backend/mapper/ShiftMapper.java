@@ -29,7 +29,7 @@ public abstract class ShiftMapper {
     public abstract ShiftDTO toShiftDTO(Shift shift);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "shiftDate", target = "shiftDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(source = "shiftDate", target = "shiftDate", dateFormat = "yyyy-MM-dd")
     @Mapping(source = "startTime", target = "startTime",dateFormat = "HH:mm")
     @Mapping(source = "endTime", target = "endTime",dateFormat = "HH:mm")
     @Mapping(target = "project", expression = "java(toProject(shiftRequest.getProjectId()))")
@@ -37,7 +37,7 @@ public abstract class ShiftMapper {
     public abstract Shift toShift(ShiftRequest shiftRequest);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "updateShiftRequest.shiftDate", target = "shiftDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(source = "updateShiftRequest.shiftDate", target = "shiftDate", dateFormat = "yyyy-MM-dd")
     @Mapping(source = "updateShiftRequest.startTime", target = "startTime",dateFormat = "HH:mm")
     @Mapping(source = "updateShiftRequest.endTime", target = "endTime",dateFormat = "HH:mm")
     public abstract void updateShift(@MappingTarget Shift shift, UpdateShiftRequest updateShiftRequest);

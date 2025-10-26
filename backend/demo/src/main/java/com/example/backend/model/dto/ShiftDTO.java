@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ShiftDTO implements Serializable {
     private Integer id;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate shiftDate;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime startTime;

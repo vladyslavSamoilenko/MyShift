@@ -1,11 +1,12 @@
 package com.example.backend.service;
 
 import com.example.backend.model.dto.ShiftDTO;
+import com.example.backend.model.request.post.shiftRequests.ShiftDateRequest;
 import com.example.backend.model.request.post.shiftRequests.ShiftRequest;
 import com.example.backend.model.request.post.shiftRequests.UpdateShiftRequest;
 import com.example.backend.model.response.GeneralResponse;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
+
 import java.util.List;
 
 public interface ShiftService {
@@ -14,7 +15,7 @@ public interface ShiftService {
     GeneralResponse<ShiftDTO> updateShift(@NotNull Integer id,@NotNull UpdateShiftRequest updateShiftRequest);
     GeneralResponse<List<ShiftDTO>> getShiftsByProjectId(@NotNull Integer id);
     GeneralResponse<List<ShiftDTO>> getShiftsByUserId(@NotNull Integer id);
-    GeneralResponse<List<ShiftDTO>> getShiftsByProjectIdAndShiftDate(@NotNull Integer id, LocalDate localDate);
-    void deleteShift(@NotNull Integer id, LocalDate localDate);
+    GeneralResponse<List<ShiftDTO>> getShiftsByProjectIdAndShiftDate(@NotNull Integer id, ShiftDateRequest shiftDateRequest);
+    void deleteShift(@NotNull Integer id, ShiftDateRequest shiftDateRequest);
 
 }

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
@@ -71,6 +72,7 @@ public class ShiftServiceImpl implements ShiftService {
         Shift shift = shiftRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.SHIFT_NOT_FOUND_BY_ID.getMessage(id)));
         shiftMapper.updateShift(shift, updateShiftRequest);
+        shift.setUpdatedAt(LocalDateTime.now());
         shift = shiftRepository.save(shift);
         ShiftDTO shiftDTO = shiftMapper.toShiftDTO(shift);
         return GeneralResponse.createSuccessful(shiftDTO);

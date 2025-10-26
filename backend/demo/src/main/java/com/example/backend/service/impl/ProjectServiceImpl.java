@@ -15,6 +15,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
@@ -50,6 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByIdAndDeletedFalse(projectId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(projectId)));
         projectMapper.updateProject(project, request);
+        project.setUpdatedAt(LocalDateTime.now());
         project = projectRepository.save(project);
 
         ProjectDTO projectDTO = projectMapper.toProjectDTO(project);

@@ -1,0 +1,15 @@
+ALTER TABLE my_shift.shifts ADD COLUMN createdAt TIMESTAMP;
+ALTER TABLE my_shift.shifts ADD COLUMN updatedAt TIMESTAMP;
+ALTER TABLE my_shift.project ADD COLUMN createdAt TIMESTAMP;
+ALTER TABLE my_shift.project ADD COLUMN updatedAt TIMESTAMP;
+ALTER TABLE my_shift.employee ADD COLUMN createdAt TIMESTAMP;
+ALTER TABLE my_shift.employee ADD COLUMN updatedAt TIMESTAMP;
+ALTER TABLE my_shift.users ADD COLUMN createdAt TIMESTAMP;
+ALTER TABLE my_shift.users ADD COLUMN updatedAt TIMESTAMP;
+ALTER TABLE my_shift.shifts RENAME COLUMN createdAt TO created_at;
+ALTER TABLE my_shift.shifts RENAME COLUMN updatedAt TO updated_at;
+ALTER TABLE my_shift.project RENAME COLUMN createdAt TO created_at;
+ALTER TABLE my_shift.project RENAME COLUMN updatedAt TO updated_at;
+ALTER TABLE my_shift.employee RENAME COLUMN createdAt TO created_at;
+ALTER TABLE my_shift.employee RENAME COLUMN updatedAt TO updated_at;
+ALTER TABLE my_shift.users DROP COLUMN createdat;

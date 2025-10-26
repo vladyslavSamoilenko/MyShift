@@ -39,8 +39,14 @@ public class User {
     @Column(nullable = false)
     private boolean deleted;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     @PrePersist
     protected void onCreate(){
         this.createdAt = LocalDateTime.now();
     }
 }
+
+

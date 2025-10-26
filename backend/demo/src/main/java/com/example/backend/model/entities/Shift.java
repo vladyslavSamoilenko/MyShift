@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
+import com.example.backend.model.entities.User;
 
 @Entity
 @Getter
@@ -30,11 +30,7 @@ public class Shift {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToMany
-    @JoinTable(
-            name = "shift_employee", // имя таблицы-связки
-            joinColumns = @JoinColumn(name = "shift_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
-    private Set<Employee> assignedEmployees;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

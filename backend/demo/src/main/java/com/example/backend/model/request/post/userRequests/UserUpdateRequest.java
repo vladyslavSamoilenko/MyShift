@@ -1,4 +1,4 @@
-package com.example.backend.model.request.post;
+package com.example.backend.model.request.post.userRequests;
 
 import jakarta.validation.constraints.NotBlank;
 

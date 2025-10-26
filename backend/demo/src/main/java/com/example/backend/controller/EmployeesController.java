@@ -2,9 +2,8 @@ package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.EmployeeDTO;
-import com.example.backend.model.entities.Employee;
-import com.example.backend.model.request.post.EmployeeRequest;
-import com.example.backend.model.request.post.UpdateEmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.service.EmployeeService;
 import com.example.backend.utils.ApiUtils;

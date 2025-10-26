@@ -1,18 +1,14 @@
-package com.example.backend.model.request.post;
+package com.example.backend.model.request.post.projectRequests;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectRequest implements Serializable {
-
+public class UpdateProjectRequest {
     @NotBlank(message = "Must contains name")
     private String name;
     @NotBlank(message = "must contains description")

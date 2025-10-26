@@ -3,8 +3,8 @@ package com.example.backend.mapper;
 
 import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.entities.Project;
-import com.example.backend.model.request.post.ProjectRequest;
-import com.example.backend.model.request.post.UpdateProjectRequest;
+import com.example.backend.model.request.post.projectRequests.ProjectRequest;
+import com.example.backend.model.request.post.projectRequests.UpdateProjectRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

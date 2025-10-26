@@ -6,7 +6,7 @@ import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.User;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
-import com.example.backend.model.request.post.UserUpdateRequest;
+import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
     public String createDefaultPassword() {
         char [] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%&".toCharArray();
         Random random = new Random();

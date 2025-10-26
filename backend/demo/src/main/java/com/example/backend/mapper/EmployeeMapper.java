@@ -3,8 +3,8 @@ package com.example.backend.mapper;
 
 import com.example.backend.model.dto.EmployeeDTO;
 import com.example.backend.model.entities.Employee;
-import com.example.backend.model.request.post.EmployeeRequest;
-import com.example.backend.model.request.post.UpdateEmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

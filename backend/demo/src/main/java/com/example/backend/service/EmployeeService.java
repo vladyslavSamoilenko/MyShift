@@ -1,11 +1,8 @@
 package com.example.backend.service;
 
 import com.example.backend.model.dto.EmployeeDTO;
-import com.example.backend.model.dto.ProjectDTO;
-import com.example.backend.model.request.post.EmployeeRequest;
-import com.example.backend.model.request.post.ProjectRequest;
-import com.example.backend.model.request.post.UpdateEmployeeRequest;
-import com.example.backend.model.request.post.UpdateProjectRequest;
+import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
+import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import com.example.backend.model.response.GeneralResponse;
 import jakarta.validation.constraints.NotNull;
 

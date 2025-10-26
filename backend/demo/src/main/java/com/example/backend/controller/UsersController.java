@@ -2,8 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.UserDTO;
-import com.example.backend.model.request.post.UserRequest;
-import com.example.backend.model.request.post.UserUpdateRequest;
+import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.service.UserService;
 import com.example.backend.utils.ApiUtils;
@@ -28,13 +27,6 @@ public class UsersController {
         GeneralResponse<UserDTO> response =userService.getById(id);
         return ResponseEntity.ok(response);
     }
-
-//    @PostMapping("/create")
-//    private ResponseEntity<GeneralResponse<UserDTO>> createUser(@RequestBody UserRequest userRequest){
-//        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
-//        GeneralResponse<UserDTO> response = userService.createUser(userRequest);
-//        return ResponseEntity.ok(response);
-//    }
 
     @PutMapping("/{id}")
     private ResponseEntity<GeneralResponse<UserDTO>> updateUser(@NotNull @PathVariable(name = "id") Integer id,@RequestBody UserUpdateRequest userUpdateRequest){

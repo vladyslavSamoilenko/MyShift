@@ -2,7 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.User;
-import com.example.backend.model.request.post.UserUpdateRequest;
+import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,7 +22,7 @@ public interface UserMapper {
     @Mapping(source = "employee.id", target = "employeeId")
     UserDTO toUserDTO(User user);
 
-
     @Mapping(target = "id", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
 }
+

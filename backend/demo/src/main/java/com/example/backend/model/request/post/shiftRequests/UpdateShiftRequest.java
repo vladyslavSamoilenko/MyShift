@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateShiftRequest {
-    @NotBlank(message = "Must contains shift`s date YYYY-MM-DD")
+    @NotBlank(message = "Must contains shift`s date dd-MM-yyyy")
     private String shiftDate;
     @NotBlank(message = "Must contains shift`s start time hh:mm")
     private String startTime;

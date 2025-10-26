@@ -1,4 +1,0 @@
-ALTER TABLE shifts ADD COLUMN user_id INT;
-ALTER TABLE project ADD  COLUMN date_created TIMESTAMP;
-ALTER TABLE users ADD  COLUMN date_created TIMESTAMP;
-ALTER TABLE employee ADD  COLUMN date_created TIMESTAMP;

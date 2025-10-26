@@ -22,7 +22,7 @@ public class ShiftsController {
 
     private final ShiftService shiftService;
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GeneralResponse<ShiftDTO>> getShiftById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage());
         GeneralResponse<ShiftDTO> response = shiftService.getById(id);
@@ -36,14 +36,14 @@ public class ShiftsController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("{/id}")
-    public ResponseEntity<GeneralResponse<ShiftDTO>> updateShift(@PathVariable(name = "id") Integer id, UpdateShiftRequest updateShiftRequest){
+    @PutMapping("/{id}")
+    public ResponseEntity<GeneralResponse<ShiftDTO>> updateShift(@PathVariable(name = "id") Integer id,@RequestBody UpdateShiftRequest updateShiftRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage());
         GeneralResponse<ShiftDTO> response = shiftService.updateShift(id, updateShiftRequest);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShift(@PathVariable Integer id, @RequestBody ShiftDateRequest deleteDateRequest){
         shiftService.deleteShift(id, deleteDateRequest.getLocalDate());
         return ResponseEntity.ok().build();

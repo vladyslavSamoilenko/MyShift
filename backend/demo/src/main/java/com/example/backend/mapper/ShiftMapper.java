@@ -1,16 +1,17 @@
 package com.example.backend.mapper;
 
 import com.example.backend.model.dto.ShiftDTO;
+import com.example.backend.model.entities.Project;
 import com.example.backend.model.entities.Shift;
+import com.example.backend.model.entities.User;
 import com.example.backend.model.request.post.shiftRequests.ShiftRequest;
 import com.example.backend.model.request.post.shiftRequests.UpdateShiftRequest;
-import com.example.backend.service.ProjectService;
-import com.example.backend.service.UserService;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Mapper(
         componentModel = "spring", //mapper as a bean
@@ -19,28 +20,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 )
 public abstract class ShiftMapper {
 
-    @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private UserService userService;
-
-
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "shiftDate", target = "shiftDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(source = "shiftDate", target = "shiftDate")
     @Mapping(source = "startTime", target = "startTime")
     @Mapping(source = "endTime", target = "endTime")
-    @Mapping(source = "project.id", target = "projectID")
+    @Mapping(source = "project.id", target = "projectId")
     @Mapping(source = "user.id", target = "userId")
     public abstract ShiftDTO toShiftDTO(Shift shift);
 
-    @Mapping(source = "id", target = "id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(source = "shiftDate", target = "shiftDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(source = "startTime", target = "startTime")
-    @Mapping(source = "endTime", target = "endTime")
-    @Mapping(target = "project", expression = "java(projectService.getById(ShiftRequest.getProjectID()))")
-    @Mapping(target = "user", expression = "java(userService.getById(ShiftRequest.getUserId()))")
-    public abstract Shift createShift(ShiftRequest shiftRequest);
+    @Mapping(source = "startTime", target = "startTime",dateFormat = "HH:mm")
+    @Mapping(source = "endTime", target = "endTime",dateFormat = "HH:mm")
+    @Mapping(target = "project", expression = "java(toProject(shiftRequest.getProjectId()))")
+    @Mapping(target = "user", expression = "java(toUser(shiftRequest.getUserId()))")
+    public abstract Shift toShift(ShiftRequest shiftRequest);
 
     @Mapping(target = "id", ignore = true)
-    public abstract void updateShift(Shift shift, UpdateShiftRequest updateShiftRequest);
+    @Mapping(source = "updateShiftRequest.shiftDate", target = "shiftDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(source = "updateShiftRequest.startTime", target = "startTime",dateFormat = "HH:mm")
+    @Mapping(source = "updateShiftRequest.endTime", target = "endTime",dateFormat = "HH:mm")
+    public abstract void updateShift(@MappingTarget Shift shift, UpdateShiftRequest updateShiftRequest);
+
+    protected Project toProject(Integer id){
+        if(id == null) return null;
+        Project project = new Project();
+        project.setId(id);
+        return project;
+    }
+
+    protected User toUser(Integer id){
+        if (id == null) return null;
+        User user = new User();
+        user.setId(id);
+        return user;
+    }
 }

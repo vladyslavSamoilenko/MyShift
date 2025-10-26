@@ -64,12 +64,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String createDefaultPassword() {
-        char [] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%&".toCharArray();
+        char [] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890".toCharArray();
+        char [] specialSymbols = "!@#$%&*".toCharArray();
         Random random = new Random();
 
         StringBuilder password = new StringBuilder();
-        for(int i = 0; i < 12; i++){
-            int randomIndex = random.nextInt(68);
+        password.append(specialSymbols[random.nextInt(7)]);
+        for(int i = 0; i < 11; i++){
+            int randomIndex = random.nextInt(62);
             password.append(chars[randomIndex]);
         }
         return password.toString();

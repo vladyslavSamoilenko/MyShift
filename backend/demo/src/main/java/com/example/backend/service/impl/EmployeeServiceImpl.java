@@ -18,6 +18,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -63,6 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findByIdAndDeletedFalse(employeeId)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.EMPLOYEE_NOT_FOUND_BY_ID.getMessage(employeeId)));
         employeeMapper.updateEmployee(employee, updateEmployeeRequest);
+        employee.setUpdatedAt(LocalDateTime.now());
         employee = employeeRepository.save(employee);
 
         EmployeeDTO employeeDTO = employeeMapper.toEmployeeDTO(employee);

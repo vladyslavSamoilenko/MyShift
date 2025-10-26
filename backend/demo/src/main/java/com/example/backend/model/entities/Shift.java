@@ -1,10 +1,12 @@
 package com.example.backend.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import com.example.backend.model.entities.User;
 
@@ -33,4 +35,17 @@ public class Shift {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+    }
 }

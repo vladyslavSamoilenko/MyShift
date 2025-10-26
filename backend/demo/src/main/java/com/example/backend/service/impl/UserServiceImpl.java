@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(userId).orElseThrow(() -> new NotFoundException(
                 ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId)));
         userMapper.updateUser(user, userUpdateRequest);
+        user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
 
         UserDTO userDTO = userMapper.toUserDTO(user);

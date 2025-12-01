@@ -14,6 +14,10 @@ import java.util.Set;
 @Table(name = "employee", schema = "my_shift")
 public class Employee {
 
+    public static final String FIRST_NAME_FIELD = "firstName";
+    public static final String LAST_NAME_FIELD = "lastName";
+    public static final String IS_DELETED_FIELD = "deleted";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

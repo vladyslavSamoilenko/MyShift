@@ -10,24 +10,25 @@ import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
 import com.example.backend.model.request.post.shiftRequests.ShiftDateRequest;
 import com.example.backend.model.request.post.shiftRequests.ShiftRequest;
+import com.example.backend.model.request.post.shiftRequests.ShiftSearchRequest;
 import com.example.backend.model.request.post.shiftRequests.UpdateShiftRequest;
 import com.example.backend.model.response.GeneralResponse;
+import com.example.backend.model.response.PaginationResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.ShiftRepository;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.cryteriaAPI.ShiftSearchCriteria;
 import com.example.backend.service.ShiftService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -79,37 +80,56 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
-    public GeneralResponse<List<ShiftDTO>> getShiftsByProjectId(Integer id) {
-        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_Id(id);
-        List<ShiftDTO> listShifts = shifts
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(shiftMapper::toShiftDTO)
-                .toList();
-        return GeneralResponse.createSuccessful(listShifts);
+    public GeneralResponse<PaginationResponse<ShiftDTO>> searchShift(ShiftSearchRequest request, Pageable pageable) {
+        Specification<Shift> shiftSpecification = new ShiftSearchCriteria(request);
+        Page<ShiftDTO> shifts = shiftRepository.findAll(shiftSpecification, pageable)
+                .map(shiftMapper::toShiftDTO);
+        PaginationResponse<ShiftDTO> response = PaginationResponse.<ShiftDTO>builder()
+                .content(shifts.getContent())
+                .pagination(PaginationResponse.Pagination.builder()
+                        .total(shifts.getTotalElements())
+                        .limit(pageable.getPageSize())
+                        .page(shifts.getNumber() + 1)
+                        .pages(shifts.getTotalPages())
+                        .build())
+                .build();
+        return GeneralResponse.createSuccessful(response);
     }
 
-    @Override
-    public GeneralResponse<List<ShiftDTO>> getShiftsByUserId(Integer id) {
-        Optional<List<Shift>> shifts = shiftRepository.findShiftsByUser_Id(id);
-        List<ShiftDTO> listShift = shifts
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(shiftMapper::toShiftDTO)
-                .toList();
-        return GeneralResponse.createSuccessful(listShift);
-    }
-
-    @Override
-    public GeneralResponse<List<ShiftDTO>> getShiftsByProjectIdAndShiftDate(Integer id, ShiftDateRequest shiftDateRequest) {
-        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_IdAndShiftDate(id, LocalDate.parse(shiftDateRequest.getLocalDate()));
-        List<ShiftDTO> listShift = shifts
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(shiftMapper::toShiftDTO)
-                .toList();
-        return GeneralResponse.createSuccessful(listShift);
-    }
+//    @Override
+//    public GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByProjectId(Integer id, Pageable pageable) {
+////        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_Id(id);
+////        List<ShiftDTO> listShifts = shifts
+////                .orElse(Collections.emptyList())
+////                .stream()
+////                .map(shiftMapper::toShiftDTO)
+////                .toList();
+//
+//        Page<ShiftDTO> shifts = shiftRepository.findShiftsByProject_Id(id, pageable).map(ShiftMapper::toShiftDTO);
+//        return GeneralResponse.createSuccessful(listShifts);
+//    }
+//
+//    @Override
+//    public GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByUserId(Integer id,Pageable pageable) {
+//        Optional<List<Shift>> shifts = shiftRepository.findShiftsByUser_Id(id);
+//        List<ShiftDTO> listShift = shifts
+//                .orElse(Collections.emptyList())
+//                .stream()
+//                .map(shiftMapper::toShiftDTO)
+//                .toList();
+//        return GeneralResponse.createSuccessful(listShift);
+//    }
+//
+//    @Override
+//    public GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByProjectIdAndShiftDate(Integer id, ShiftDateRequest shiftDateRequest, Pageable pageable) {
+//        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_IdAndShiftDate(id, LocalDate.parse(shiftDateRequest.getLocalDate()));
+//        List<ShiftDTO> listShift = shifts
+//                .orElse(Collections.emptyList())
+//                .stream()
+//                .map(shiftMapper::toShiftDTO)
+//                .toList();
+//        return GeneralResponse.createSuccessful(listShift);
+//    }
 
     @Transactional
     @Override

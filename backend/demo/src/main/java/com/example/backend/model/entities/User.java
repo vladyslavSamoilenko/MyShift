@@ -15,6 +15,10 @@ import java.time.LocalDateTime;
 @Table(name = "users", schema = "my_shift")
 public class User {
 
+    public static final String USER_ID_FIELD = "id";
+    public static final String USER_ROLE_FIELD = "role";
+    public static final String IS_DELETED_FIELD = "deleted";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

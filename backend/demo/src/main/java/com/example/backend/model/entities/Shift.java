@@ -15,6 +15,13 @@ import com.example.backend.model.entities.User;
 @Setter
 @Table(name = "shifts", schema = "my_shift")
 public class Shift {
+
+    public static final String SHIFT_DATE_FIELD = "shiftDate";
+    public static final String PROJECT_ID_FIELD = "projectId";
+    public static final String USER_ID_FIELD = "userId";
+    public static final String ID_SHIFT = "id";
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

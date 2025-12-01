@@ -15,6 +15,9 @@ import java.util.List;
 @Table(name = "project", schema = "my_shift")
 public class Project {
 
+    public static final String PROJECT_ID_FIELD = "id";
+    public static final String IS_DELETED_FIELD = "deleted";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

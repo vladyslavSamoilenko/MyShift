@@ -8,7 +8,10 @@ import jakarta.validation.constraints.NotNull;
 
 public interface ProjectService {
     GeneralResponse<ProjectDTO> getById(@NotNull Integer id);
+
     GeneralResponse<ProjectDTO> createProject(@NotNull ProjectRequest projectRequest);
+
     GeneralResponse<ProjectDTO> updateProject(@NotNull Integer projectId, @NotNull UpdateProjectRequest updateProjectRequest);
+
     void softDeleteProject(@NotNull Integer projectId);
 }

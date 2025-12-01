@@ -12,12 +12,12 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GeneralResponse<P> implements Serializable {
+public class GeneralResponse<P extends Serializable> implements Serializable {
     private String message;
     private P payload;
     private boolean success;
 
-    public static <P> GeneralResponse<P> createSuccessful(P payload){
+    public static <P extends Serializable> GeneralResponse<P> createSuccessful(P payload){
         return new GeneralResponse<>(StringUtils.EMPTY, payload, true);
     }
 }

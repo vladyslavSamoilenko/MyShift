@@ -3,7 +3,6 @@ package com.example.backend.model.constants;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

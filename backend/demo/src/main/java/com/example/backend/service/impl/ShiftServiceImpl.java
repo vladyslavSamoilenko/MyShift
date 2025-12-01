@@ -96,41 +96,6 @@ public class ShiftServiceImpl implements ShiftService {
         return GeneralResponse.createSuccessful(response);
     }
 
-//    @Override
-//    public GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByProjectId(Integer id, Pageable pageable) {
-////        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_Id(id);
-////        List<ShiftDTO> listShifts = shifts
-////                .orElse(Collections.emptyList())
-////                .stream()
-////                .map(shiftMapper::toShiftDTO)
-////                .toList();
-//
-//        Page<ShiftDTO> shifts = shiftRepository.findShiftsByProject_Id(id, pageable).map(ShiftMapper::toShiftDTO);
-//        return GeneralResponse.createSuccessful(listShifts);
-//    }
-//
-//    @Override
-//    public GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByUserId(Integer id,Pageable pageable) {
-//        Optional<List<Shift>> shifts = shiftRepository.findShiftsByUser_Id(id);
-//        List<ShiftDTO> listShift = shifts
-//                .orElse(Collections.emptyList())
-//                .stream()
-//                .map(shiftMapper::toShiftDTO)
-//                .toList();
-//        return GeneralResponse.createSuccessful(listShift);
-//    }
-//
-//    @Override
-//    public GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByProjectIdAndShiftDate(Integer id, ShiftDateRequest shiftDateRequest, Pageable pageable) {
-//        Optional<List<Shift>> shifts = shiftRepository.findShiftsByProject_IdAndShiftDate(id, LocalDate.parse(shiftDateRequest.getLocalDate()));
-//        List<ShiftDTO> listShift = shifts
-//                .orElse(Collections.emptyList())
-//                .stream()
-//                .map(shiftMapper::toShiftDTO)
-//                .toList();
-//        return GeneralResponse.createSuccessful(listShift);
-//    }
-
     @Transactional
     @Override
     public void deleteShift(@NotNull Integer id, ShiftDateRequest shiftDateRequest) {

@@ -8,7 +8,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import com.example.backend.model.entities.User;
 
 @Entity
 @Getter

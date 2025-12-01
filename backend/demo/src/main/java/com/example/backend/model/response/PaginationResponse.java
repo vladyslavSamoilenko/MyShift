@@ -1,6 +1,5 @@
 package com.example.backend.model.response;
 
-import com.example.backend.model.dto.ShiftDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

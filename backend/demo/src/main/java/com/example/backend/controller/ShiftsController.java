@@ -67,21 +67,4 @@ public class ShiftsController {
 
     }
 
-//    @GetMapping("/list/projectId/{id}")
-//    public ResponseEntity<GeneralResponse<List<ShiftDTO>>> getShiftsByProjectId(@PathVariable(name = "id") Integer id){
-//        GeneralResponse<List<ShiftDTO>> response = shiftService.getShiftsByProjectId(id);
-//        return ResponseEntity.ok(response);
-//    }
-//
-//    @GetMapping("/list/userId/{id}")
-//    public ResponseEntity<GeneralResponse<List<ShiftDTO>>> getShiftsByUserId(@PathVariable(name = "id") Integer id){
-//        GeneralResponse<List<ShiftDTO>> response = shiftService.getShiftsByUserId(id);
-//        return ResponseEntity.ok(response);
-//    }
-//
-//    @GetMapping("/list/ProjectIdAndDate/{id}")
-//    public ResponseEntity<GeneralResponse<List<ShiftDTO>>> getShiftsByProjectIdAndShiftDate(@PathVariable(name = "id") Integer id,@RequestBody ShiftDateRequest shiftDateRequest){
-//        GeneralResponse<List<ShiftDTO>> response = shiftService.getShiftsByProjectIdAndShiftDate(id,shiftDateRequest);
-//        return ResponseEntity.ok(response);
- //   }
 }

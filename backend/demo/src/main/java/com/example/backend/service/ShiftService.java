@@ -18,15 +18,6 @@ public interface ShiftService {
 
     GeneralResponse<ShiftDTO> updateShift(@NotNull Integer id,@NotNull UpdateShiftRequest updateShiftRequest);
 
-//    GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByProjectId(@NotNull Integer id,
-//                                                                       Pageable pageable);
-//
-//    GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByUserId(@NotNull Integer id,
-//                                                                    Pageable pageable);
-//
-//    GeneralResponse<PaginationResponse<ShiftDTO>> getShiftsByProjectIdAndShiftDate(@NotNull Integer id,
-//                                                                                   ShiftDateRequest shiftDateRequest,
-//                                                                                   Pageable pageable);
     GeneralResponse<PaginationResponse<ShiftDTO>> searchShift(@NotNull ShiftSearchRequest request, Pageable pageable);
     void deleteShift(@NotNull Integer id, ShiftDateRequest shiftDateRequest);
 

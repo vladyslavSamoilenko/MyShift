@@ -35,7 +35,6 @@ public class ShiftSearchCriteria implements Specification<Shift> {
             ));
         }
         if (request.getProjectId() != null) {
-            // Обращаемся к объекту project, а у него берем поле id
             predicates.add(criteriaBuilder.equal(
                     root.get("project").get("id"),
                     request.getProjectId()

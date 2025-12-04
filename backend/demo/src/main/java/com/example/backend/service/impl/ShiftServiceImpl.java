@@ -44,6 +44,8 @@ public class ShiftServiceImpl implements ShiftService {
         Shift shift = shiftRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.SHIFT_NOT_FOUND_BY_ID.getMessage(id)));
         ShiftDTO shiftDTO = shiftMapper.toShiftDTO(shift);
+//        shiftDTO.setProjectId(shift.getProject().getId());
+//        shiftDTO.setUserId(shift.getUser().getId());
         return GeneralResponse.createSuccessful(shiftDTO);
     }
 
@@ -60,6 +62,7 @@ public class ShiftServiceImpl implements ShiftService {
 
         User user = userRepository.findUserById(shiftRequest.getUserId())
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(shiftRequest.getUserId())));
+
         shift.setUser(user);
 
         shiftRepository.save(shift);

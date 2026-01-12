@@ -10,7 +10,7 @@ import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.*;
 
 @Mapper(
-        componentModel = "spring", //mapper as a bean
+        componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         imports = {DateTimeUtils.class, Object.class},
         uses = {ShiftMapper.class}

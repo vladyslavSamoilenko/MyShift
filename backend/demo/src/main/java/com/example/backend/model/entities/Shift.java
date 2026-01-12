@@ -2,13 +2,16 @@ package com.example.backend.model.entities;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
+@Data
 @Entity
 @Getter
 @Setter
@@ -42,13 +45,12 @@ public class Shift {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "shift", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ShiftEmployee> shiftEmployees;
+
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate(){

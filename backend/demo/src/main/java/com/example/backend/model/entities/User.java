@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 255)
     private String password;
 
     @Column(nullable = false)
@@ -37,14 +37,14 @@ public class User {
     private Employee employee;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private boolean deleted;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @PrePersist

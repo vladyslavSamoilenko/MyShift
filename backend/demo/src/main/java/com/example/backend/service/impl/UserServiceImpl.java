@@ -12,6 +12,7 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public GeneralResponse<UserDTO> getById(@NotNull Integer id) {
@@ -37,7 +39,6 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsUserByEmail(user.getEmail())) {
             throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS_BY_EMAIL.getMessage(user.getEmail()));
         }
-
         User savedUser = userRepository.save(user);
         UserDTO userDTO = userMapper.toUserDTO(savedUser);
         return GeneralResponse.createSuccessful(userDTO);
@@ -48,6 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(userId).orElseThrow(() -> new NotFoundException(
                 ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId)));
         userMapper.updateUser(user, userUpdateRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
 

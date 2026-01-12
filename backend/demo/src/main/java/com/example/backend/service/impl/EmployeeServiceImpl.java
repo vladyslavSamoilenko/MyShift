@@ -16,6 +16,7 @@ import com.example.backend.service.EmployeeService;
 import com.example.backend.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public GeneralResponse<EmployeeDTO> getById(@NotNull Integer id) {
@@ -47,13 +49,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         Employee employee = employeeMapper.createEmployee(employeeRequest);
+        employee.setUpdatedAt(LocalDateTime.now());
         Employee savedEmployee = employeeRepository.save(employee);
 
         User user = new User();
         user.setEmail(employee.getEmail());
-        user.setPassword(userService.createDefaultPassword());
+        user.setPassword(passwordEncoder.encode(userService.createDefaultPassword()));
         user.setRole(Role.valueOf(employeeRequest.getRole()));
         user.setEmployee(employee);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userService.createUser(user);
 
         EmployeeDTO employeeDTO = employeeMapper.toEmployeeDTO(savedEmployee);

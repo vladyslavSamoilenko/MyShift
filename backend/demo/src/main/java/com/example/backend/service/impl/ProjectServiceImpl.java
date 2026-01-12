@@ -41,6 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = projectMapper.createProject(projectRequest);
+        project.setUpdatedAt(LocalDateTime.now());
         Project savedProject = projectRepository.save(project);
         ProjectDTO projectDTO = projectMapper.toProjectDTO(savedProject);
 

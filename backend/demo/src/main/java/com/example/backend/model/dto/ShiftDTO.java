@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Builder
 @Data
@@ -24,4 +25,5 @@ public class ShiftDTO implements Serializable {
     private LocalTime endTime;
     private Integer projectId;
     private Integer userId;
+    private List<ShiftEmployeeInfoDTO> employees;
 }

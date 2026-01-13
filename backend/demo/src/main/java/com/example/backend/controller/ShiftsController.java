@@ -2,10 +2,8 @@ package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.ShiftDTO;
-import com.example.backend.model.request.post.shiftRequests.ShiftDateRequest;
-import com.example.backend.model.request.post.shiftRequests.ShiftRequest;
-import com.example.backend.model.request.post.shiftRequests.ShiftSearchRequest;
-import com.example.backend.model.request.post.shiftRequests.UpdateShiftRequest;
+import com.example.backend.model.enums.Status;
+import com.example.backend.model.request.post.shiftRequests.*;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.model.response.PaginationResponse;
 import com.example.backend.service.ShiftService;
@@ -52,6 +50,7 @@ public class ShiftsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShift(@PathVariable Integer id,
                                                                  @RequestBody ShiftDateRequest deleteDateRequest) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         shiftService.deleteShift(id, deleteDateRequest);
         return ResponseEntity.ok().build();
     }
@@ -67,4 +66,12 @@ public class ShiftsController {
 
     }
 
+    @PutMapping("/updateShiftStatus/{id}")
+    public ResponseEntity<GeneralResponse<ShiftDTO>> setShiftStatus(@PathVariable Integer id,
+                                                                    @RequestBody ShiftStatusRequest shiftStatusRequest){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        GeneralResponse<ShiftDTO> shiftDTO = shiftService.updateShiftStatus(id, shiftStatusRequest);
+        return ResponseEntity.ok(shiftDTO);
+    }
 }

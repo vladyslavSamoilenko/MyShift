@@ -7,10 +7,7 @@ import com.example.backend.model.entities.*;
 import com.example.backend.model.enums.Status;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
-import com.example.backend.model.request.post.shiftRequests.ShiftDateRequest;
-import com.example.backend.model.request.post.shiftRequests.ShiftRequest;
-import com.example.backend.model.request.post.shiftRequests.ShiftSearchRequest;
-import com.example.backend.model.request.post.shiftRequests.UpdateShiftRequest;
+import com.example.backend.model.request.post.shiftRequests.*;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.model.response.PaginationResponse;
 import com.example.backend.repository.*;
@@ -24,10 +21,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +36,6 @@ public class ShiftServiceImpl implements ShiftService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
-    private final ShiftEmployeeRepository shiftEmployeeRepository;
 
     @Override
     @Transactional
@@ -46,8 +43,6 @@ public class ShiftServiceImpl implements ShiftService {
         Shift shift = shiftRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.SHIFT_NOT_FOUND_BY_ID.getMessage(id)));
         ShiftDTO shiftDTO = shiftMapper.toShiftDTO(shift);
-//        shiftDTO.setProjectId(shift.getProject().getId());
-//        shiftDTO.setUserId(shift.getUser().getId());
         return GeneralResponse.createSuccessful(shiftDTO);
     }
 
@@ -57,40 +52,29 @@ public class ShiftServiceImpl implements ShiftService {
         if(shiftRepository.existsShiftByShiftDateAndUser_Id(LocalDate.parse(shiftRequest.getShiftDate()), shiftRequest.getUserId())){
             throw new DataExistException(ApiErrorMessage.SHIFT_ALREADY_EXISTS_AT_THIS_DAY_FOR_USER_ID.getMessage(shiftRequest.getUserId()));
         }
-        Shift shift = shiftMapper.toShift(shiftRequest);
 
+        LocalDate date = LocalDate.parse(shiftRequest.getShiftDate());
 
         Project project = projectRepository.findById(shiftRequest.getProjectId())
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(shiftRequest.getProjectId())));
-        shift.setProject(project);
 
-        User user = userRepository.findUserById(shiftRequest.getUserId())
+        User manager = userRepository.findUserById(shiftRequest.getUserId())
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(shiftRequest.getUserId())));
 
-        shift.setUser(user);
+        Employee employee = employeeRepository.findByIdAndDeletedFalse(shiftRequest.getEmployeeId())
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.EMPLOYEE_NOT_FOUND_BY_ID.getMessage(shiftRequest.getEmployeeId())));
+
+        Shift shift = shiftMapper.toShift(shiftRequest);
+
+        shift.setShiftDate(date);
+        shift.setProject(project);
+        shift.setUser(manager);
+        shift.setEmployee(employee);
+        shift.setStatus(Status.PLANNED);
+        shift.setCreatedAt(LocalDateTime.now());
+
         Shift savedShift = shiftRepository.save(shift);
-
-        List<ShiftEmployee> shiftEmployees = new ArrayList<>();
-
-        if(shiftRequest.getEmployeesIds() != null && !shiftRequest.getEmployeesIds().isEmpty()){
-            for(Integer empId : shiftRequest.getEmployeesIds()){
-                Employee employee = employeeRepository.findById(empId).orElseThrow(() -> new NotFoundException("Employee not found with id: " + empId));
-
-                ShiftEmployee se = new ShiftEmployee();
-                se.setShift(savedShift);
-                se.setEmployee(employee);
-                se.setStatus(Status.PLANNED);
-
-                shiftEmployees.add(se);
-            }
-
-        }
-        savedShift.setShiftEmployees(shiftEmployees);
-        shiftRepository.save(savedShift);
         ShiftDTO shiftDTO = shiftMapper.toShiftDTO(savedShift);
-
-//        shiftRepository.save(shift);
-//        ShiftDTO shiftDTO = shiftMapper.toShiftDTO(shift);
 
         return GeneralResponse.createSuccessful(shiftDTO);
     }
@@ -106,6 +90,71 @@ public class ShiftServiceImpl implements ShiftService {
         shift = shiftRepository.save(shift);
         ShiftDTO shiftDTO = shiftMapper.toShiftDTO(shift);
         return GeneralResponse.createSuccessful(shiftDTO);
+    }
+
+    @Override
+    public GeneralResponse<ShiftDTO> updateShiftStatus(@NotNull Integer id, ShiftStatusRequest shiftStatusRequest) {
+        Shift shift = shiftRepository.findById(id).orElseThrow(() -> new NotFoundException(ApiErrorMessage.SHIFT_NOT_FOUND_BY_DAY.getMessage(id)));
+
+        Status newStatus;
+        try{
+           newStatus = Status.valueOf(shiftStatusRequest.getStatus());
+        }catch (IllegalArgumentException | NullPointerException exception){
+            throw new IllegalArgumentException("Invalid status: "+ shiftStatusRequest.getStatus());
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if(newStatus.equals(Status.PRESENT)){
+            if(shift.getActual_start_time() != null){
+                throw new IllegalArgumentException("Shift already started");
+            }
+            shift.setActual_start_time(now);
+        }
+
+        if (newStatus.equals(Status.FINISHED)){
+            if(shift.getActual_start_time() == null){
+                throw new IllegalArgumentException("Cannot finish the shift, shift didnt started");
+            }
+            shift.setActual_end_time(LocalDateTime.now());
+
+            Integer durationInMinutes = Math.toIntExact(Duration.between(shift.getActual_start_time(), now).toMinutes());
+
+            shift.setDuration(durationInMinutes);
+
+        }
+
+        if(newStatus.equals(Status.BREAK_START) && shift.getStatus().equals(Status.PRESENT)){
+            if(shift.getActual_start_time() == null){
+                throw new IllegalArgumentException("Cannot take a break, the shift wasn't started");
+            }
+
+            shift.setBreak_start(LocalTime.from(now));
+        }
+
+        if(newStatus.equals(Status.BREAK_END)){
+            if (shift.getStatus() != Status.BREAK_START) {
+                throw new IllegalArgumentException("Cannot end break. Status is not BREAK_START.");
+            }
+            if(shift.getBreak_start() == null){
+                throw new IllegalArgumentException("Cannot finish a break, the break wasn't started");
+            }
+
+            shift.setBreak_end(LocalTime.now());
+
+            Integer durationInMinutes = Math.toIntExact(Duration.between(shift.getBreak_start(), LocalTime.now()).toMinutes());
+
+            Integer totalBreakDuration = shift.getBreak_duration()== null ? 0 : shift.getBreak_duration();
+            shift.setBreak_duration(totalBreakDuration + durationInMinutes);
+            shift.setBreak_duration(durationInMinutes);
+        }
+
+        shift.setStatus(Status.valueOf(shiftStatusRequest.getStatus()));
+
+        shift = shiftRepository.save(shift);
+        ShiftDTO shiftDTO = shiftMapper.toShiftDTO(shift);
+        return GeneralResponse.createSuccessful(shiftDTO);
+
     }
 
     @Override
@@ -128,10 +177,11 @@ public class ShiftServiceImpl implements ShiftService {
     @Transactional
     @Override
     public void deleteShift(@NotNull Integer id, ShiftDateRequest shiftDateRequest) {
-
-        shiftEmployeeRepository.deleteAllByShift_Id(id);
-
+        if (!shiftRepository.existsShiftByShiftDateAndUser_Id(LocalDate.parse(shiftDateRequest.getLocalDate()) ,id)){
+            throw new NotFoundException(ApiErrorMessage.SHIFT_NOT_FOUND_BY_ID.getMessage(id));
+        }
         LocalDate shiftDate = LocalDate.parse(shiftDateRequest.getLocalDate());
         shiftRepository.deleteShiftByUser_IdAndShiftDate(id, shiftDate);
     }
+
 }

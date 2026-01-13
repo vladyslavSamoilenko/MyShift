@@ -25,5 +25,8 @@ public class ShiftDTO implements Serializable {
     private LocalTime endTime;
     private Integer projectId;
     private Integer userId;
-    private List<ShiftEmployeeInfoDTO> employees;
+    private Integer employeeId;
+    private String status;
+    private Integer duration;
+    private String durationFormatted;
 }

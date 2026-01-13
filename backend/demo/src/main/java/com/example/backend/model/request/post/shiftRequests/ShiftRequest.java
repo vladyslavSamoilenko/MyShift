@@ -22,6 +22,6 @@ public class ShiftRequest {
     private Integer projectId;
     @NotBlank(message = "Must contains user id")
     private Integer userId;
-    @NotEmpty(message = "Must contain at least one employee")
-    private List<Integer> employeesIds;
+    @NotBlank(message = "Must contains employee id")
+    private Integer employeeId;
 }

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 
 public interface ShiftRepository extends JpaRepository<Shift, Integer>, JpaSpecificationExecutor<Shift> {
+    boolean existsById(Integer id);
     boolean existsShiftByShiftDateAndUser_Id(@NotNull LocalDate shiftDate,@NotNull Integer userId);
     void deleteShiftByUser_IdAndShiftDate(Integer userId, LocalDate shiftDate);
 

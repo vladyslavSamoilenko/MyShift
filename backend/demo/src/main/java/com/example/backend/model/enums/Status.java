@@ -1,5 +1,5 @@
 package com.example.backend.model.enums;
 
 public enum Status {
-    PRESENT, ABSENT, PLANNED
+    PRESENT, BREAK_START, BREAK_END , FINISHED, ABSENT, PLANNED
 }

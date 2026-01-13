@@ -1,5 +1,6 @@
 package com.example.backend.model.entities;
 
+import com.example.backend.model.enums.Status;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -37,6 +38,9 @@ public class Shift {
     @Column(nullable = false)
     private LocalTime endTime;
 
+    @Column(nullable = false)
+    private Integer duration;
+
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
@@ -45,8 +49,28 @@ public class Shift {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "shift", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ShiftEmployee> shiftEmployees;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @Column(name = "actual_start_time")
+    private LocalDateTime actual_start_time;
+
+    @Column(name = "actual_end_time")
+    private LocalDateTime actual_end_time;
+
+    @Column(name = "break_duration")
+    private Integer break_duration;
+
+    @Column(name = "break_start")
+    private LocalTime break_start;
+
+    @Column(name = "break_end")
+    private LocalTime break_end;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(nullable = false, updatable = false)

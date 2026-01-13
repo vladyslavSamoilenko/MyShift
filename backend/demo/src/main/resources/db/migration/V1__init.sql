@@ -39,22 +39,18 @@ CREATE TABLE shifts (
        end_time TIME NOT NULL,
        project_id INT NOT NULL ,
        user_id INT REFERENCES users(id),
+       employee_id INT NOT NULL,
+       status VARCHAR(25) NOT NULL DEFAULT 'PLANNED',
+       actual_start_time TIMESTAMP,
+       actual_end_time TIMESTAMP,
+       break_duration INT DEFAULT 0,
+       break_start TIMESTAMP,
+       break_end TIMESTAMP,
+       duration INT DEFAULT 0,
 
        created_at TIMESTAMP NOT NULL,
-       CONSTRAINT fk_shift_project FOREIGN KEY (project_id) REFERENCES project(id)
-);
-
-CREATE TABLE shift_employee (
-      shift_id INT NOT NULL,
-      employee_id INT NOT NULL,
-      status VARCHAR(25) NOT NULL default 'PLANNED',
-      actual_start_time TIMESTAMP,
-      actual_end_time TIMESTAMP,
-      break_duration INT DEFAULT 0,
-
-      PRIMARY KEY (shift_id, employee_id),
-      CONSTRAINT fk_shift_employee_shift FOREIGN KEY (shift_id) REFERENCES shifts(id),
-      CONSTRAINT fk_shift_employee_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
+       CONSTRAINT fk_shift_project FOREIGN KEY (project_id) REFERENCES project(id),
+       CONSTRAINT fk_shift_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
 );
 
 CREATE TABLE project_users(

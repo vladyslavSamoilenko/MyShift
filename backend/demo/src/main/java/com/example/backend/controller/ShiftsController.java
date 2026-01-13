@@ -55,7 +55,7 @@ public class ShiftsController {
         return ResponseEntity.ok().build();
     }
 
-
+    @DeleteMapping("/{id}")
     public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShiftById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         shiftService.deleteShiftById(id);

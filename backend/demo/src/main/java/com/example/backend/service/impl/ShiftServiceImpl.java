@@ -184,4 +184,12 @@ public class ShiftServiceImpl implements ShiftService {
         shiftRepository.deleteShiftByUser_IdAndShiftDate(id, shiftDate);
     }
 
+    @Override
+    public void deleteShiftById(@NotNull Integer id) {
+        if(!shiftRepository.existsById(id)){
+            throw new NotFoundException(ApiErrorMessage.SHIFT_NOT_FOUND_BY_ID.getMessage(id));
+        }
+        shiftRepository.deleteShiftById(id);
+    }
+
 }

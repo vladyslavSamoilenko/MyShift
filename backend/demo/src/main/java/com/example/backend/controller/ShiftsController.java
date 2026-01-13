@@ -48,10 +48,17 @@ public class ShiftsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShift(@PathVariable Integer id,
+    public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShiftByIdAndDate(@PathVariable(name = "id") Integer id,
                                                                  @RequestBody ShiftDateRequest deleteDateRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         shiftService.deleteShift(id, deleteDateRequest);
+        return ResponseEntity.ok().build();
+    }
+
+
+    public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShiftById(@PathVariable(name = "id") Integer id){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+        shiftService.deleteShiftById(id);
         return ResponseEntity.ok().build();
     }
 
@@ -67,7 +74,7 @@ public class ShiftsController {
     }
 
     @PutMapping("/updateShiftStatus/{id}")
-    public ResponseEntity<GeneralResponse<ShiftDTO>> setShiftStatus(@PathVariable Integer id,
+    public ResponseEntity<GeneralResponse<ShiftDTO>> setShiftStatus(@PathVariable(name = "id") Integer id,
                                                                     @RequestBody ShiftStatusRequest shiftStatusRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 

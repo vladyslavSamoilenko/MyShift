@@ -19,5 +19,6 @@ public interface ShiftService {
 
     GeneralResponse<PaginationResponse<ShiftDTO>> searchShift(@NotNull ShiftSearchRequest request, Pageable pageable);
     void deleteShift(@NotNull Integer id, ShiftDateRequest shiftDateRequest);
+    void deleteShiftById(@NotNull Integer id);
 
 }

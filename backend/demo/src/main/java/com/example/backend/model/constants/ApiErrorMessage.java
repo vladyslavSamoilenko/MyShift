@@ -16,14 +16,20 @@ public enum ApiErrorMessage {
 
     USER_NOT_FOUND_BY_ID("User not found by id: %s"),
     USER_ALREADY_EXISTS_BY_EMAIL("User not found by id: %s"),
+    EMAIL_NOT_EXISTS("Email %s not exists"),
+
 
     SHIFT_NOT_FOUND_BY_ID("Shift not found by id: %s"),
     SHIFT_NOT_FOUND_BY_USER_ID("Shift not found by id: %s"),
     SHIFT_NOT_FOUND_BY_DAY("Shift not found by day"),
     SHIFT_NOT_FOUND_BY_PROJECT_ID("Shift not found by project id"),
 
-    SHIFT_ALREADY_EXISTS_AT_THIS_DAY_FOR_USER_ID("Shift already exist at this day for user: %s");
+    SHIFT_ALREADY_EXISTS_AT_THIS_DAY_FOR_USER_ID("Shift already exist at this day for user: %s"),
 
+    ERROR_DURING_JWT_PROCESSING("An unexpected error occured during JWT processing"),
+    TOKEN_EXPIRED("TOKEN_EXPIRED"),
+    UNEXPECTED_ERROR_OCCURRED("An unexpected error occured. Please try again later"),
+    INVALID_TOKEN_SIGNATURE("Invalid token signature");
 
     private final String message;
 

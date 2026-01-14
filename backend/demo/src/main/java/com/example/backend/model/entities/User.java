@@ -36,14 +36,14 @@ public class User {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private boolean deleted;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 

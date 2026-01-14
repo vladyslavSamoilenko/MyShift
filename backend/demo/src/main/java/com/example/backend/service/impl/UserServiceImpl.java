@@ -12,10 +12,14 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Random;
 
 @Service
@@ -78,5 +82,19 @@ public class UserServiceImpl implements UserService {
         }
         return password.toString();
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return getUserDetails(email, userRepository);
+    }
+
+    static UserDetails getUserDetails(String email, UserRepository userRepository){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(ApiErrorMessage.EMAIL_NOT_EXISTS.getMessage()));
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()))
+        );
     }
 }

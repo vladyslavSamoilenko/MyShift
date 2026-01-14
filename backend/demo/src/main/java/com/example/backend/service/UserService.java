@@ -5,8 +5,9 @@ import com.example.backend.model.entities.User;
 import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService{
+public interface UserService extends UserDetailsService {
     GeneralResponse<UserDTO> getById(@NotNull Integer id);
 
     GeneralResponse<UserDTO> createUser(@NotNull User user);

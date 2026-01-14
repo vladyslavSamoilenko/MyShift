@@ -1,5 +1,6 @@
 package com.example.backend.model.response;
 
+import com.example.backend.model.constants.ApiMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,9 @@ public class GeneralResponse<P extends Serializable> implements Serializable {
 
     public static <P extends Serializable> GeneralResponse<P> createSuccessful(P payload){
         return new GeneralResponse<>(StringUtils.EMPTY, payload, true);
+    }
+
+    public static <P extends Serializable> GeneralResponse<P> createSuccessfulWithNewToken(P payload){
+        return new GeneralResponse<>(ApiMessage.TOKEN_CREATED_OR_UPDATED.getMessage(), payload, true);
     }
 }

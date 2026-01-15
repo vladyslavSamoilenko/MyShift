@@ -47,7 +47,7 @@ public class ShiftsController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/byDate")
     public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShiftByIdAndDate(@PathVariable(name = "id") Integer id,
                                                                  @RequestBody ShiftDateRequest deleteDateRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());

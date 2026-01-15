@@ -29,7 +29,13 @@ public enum ApiErrorMessage {
     ERROR_DURING_JWT_PROCESSING("An unexpected error occured during JWT processing"),
     TOKEN_EXPIRED("TOKEN_EXPIRED"),
     UNEXPECTED_ERROR_OCCURRED("An unexpected error occured. Please try again later"),
-    INVALID_TOKEN_SIGNATURE("Invalid token signature");
+    INVALID_TOKEN_SIGNATURE("Invalid token signature"),
+
+    AUTHENTICATION_FAILED_FOR_USER("Authentication failed for user: {}. "),
+    INVALID_USER_OR_PASSWORD("Invalid email or password. Try again"),
+    INVALID_USER_REGISTRATION_STATUS("Invalid user registration status: %s. "),
+    NOT_FOUND_REFRESH_TOKEN("Refresh token not found."),
+            ;
 
     private final String message;
 

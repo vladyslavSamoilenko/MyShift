@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
 import com.example.backend.model.dto.UserDTO;
+import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
 import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.service.UserService;

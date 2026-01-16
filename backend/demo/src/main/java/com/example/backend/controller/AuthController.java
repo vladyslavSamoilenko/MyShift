@@ -1,6 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
+import com.example.backend.model.dto.UserDTO;
+import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.security.model.profiles.UserProfileDTO;
 import com.example.backend.security.model.requests.LoginRequest;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody @Valid LoginRequest request,
             HttpServletResponse response
@@ -37,5 +39,14 @@ public class AuthController {
         response.addCookie(authorizationCookie);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/registerUserOwner")
+    public ResponseEntity<GeneralResponse<UserDTO>> registerUserOwner(@RequestBody UserOwnerRequest userOwnerRequest){
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        GeneralResponse<UserDTO> response = authService.registerUserOwner(userOwnerRequest);
+
+        return ResponseEntity.ok(response);
     }
 }

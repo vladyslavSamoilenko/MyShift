@@ -1,11 +1,17 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.mapper.EmployeeMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
+import com.example.backend.model.dto.EmployeeDTO;
 import com.example.backend.model.dto.UserDTO;
+import com.example.backend.model.entities.Employee;
 import com.example.backend.model.entities.User;
+import com.example.backend.model.enums.Role;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
+import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
+import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
 import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.UserRepository;
@@ -28,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -47,6 +54,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = userMapper.toUserDTO(savedUser);
         return GeneralResponse.createSuccessful(userDTO);
     }
+
 
     @Override
     public GeneralResponse<UserDTO> updateUser(Integer userId, UserUpdateRequest userUpdateRequest) {

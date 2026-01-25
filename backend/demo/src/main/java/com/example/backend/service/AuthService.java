@@ -9,4 +9,6 @@ import com.example.backend.security.model.requests.LoginRequest;
 public interface AuthService {
     GeneralResponse<UserProfileDTO> login(LoginRequest loginRequest);
     GeneralResponse<UserDTO> registerUserOwner(UserOwnerRequest userOwnerRequest);
+
+    GeneralResponse<UserProfileDTO> refreshAccessToken(String refreshToken);
 }

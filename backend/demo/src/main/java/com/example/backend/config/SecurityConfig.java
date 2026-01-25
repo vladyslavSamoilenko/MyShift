@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register","/auth/registerUserOwner").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/refresh/token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

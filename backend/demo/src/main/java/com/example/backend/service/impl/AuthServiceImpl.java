@@ -5,6 +5,7 @@ import com.example.backend.model.constants.ApiErrorMessage;
 import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.Employee;
 import com.example.backend.model.entities.Project;
+import com.example.backend.model.entities.RefreshToken;
 import com.example.backend.model.entities.User;
 import com.example.backend.model.enums.Role;
 import com.example.backend.model.exception.InvalidDataException;
@@ -17,6 +18,7 @@ import com.example.backend.security.model.profiles.UserProfileDTO;
 import com.example.backend.security.model.requests.LoginRequest;
 import com.example.backend.service.AuthService;
 import com.example.backend.service.ProjectService;
+import com.example.backend.service.RefreshTokenService;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
     private final EmployeeRepository employeeRepository;
     private final PasswordEncoder passwordEncoder;
     private final ProjectService projectService;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     public GeneralResponse<UserProfileDTO> login(@NotNull LoginRequest request) {
@@ -54,8 +57,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmailAndDeletedFalse(request.getEmail())
                 .orElseThrow(() -> new InvalidDataException(ApiErrorMessage.INVALID_USER_OR_PASSWORD.getMessage()));
 
+
+        RefreshToken refreshToken = refreshTokenService.generateOrUpdateRefreshToken(user);
         String token = jwtTokenProvider.generateToken(user);
-        UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token);
+        UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
         return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
@@ -90,5 +95,14 @@ public class AuthServiceImpl implements AuthService {
 
         UserDTO userDTO = userMapper.toUserDTO(user);
         return GeneralResponse.createSuccessful(userDTO);
+    }
+
+    @Override
+    public GeneralResponse<UserProfileDTO> refreshAccessToken(String refreshTokenValue) {
+        RefreshToken refreshToken = refreshTokenService.validateAndRefreshToken(refreshTokenValue);
+        User user = refreshToken.getUser();
+
+        String accessToken = jwtTokenProvider.generateToken(user);
+        return GeneralResponse.createSuccessfulWithNewToken(userMapper.toUserProfileDTO(user, accessToken, refreshToken.getToken()));
     }
 }

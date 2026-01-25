@@ -60,4 +60,13 @@ CREATE TABLE project_users(
     PRIMARY KEY (project_id, user_id),
     CONSTRAINT fk_project_project FOREIGN KEY (project_id) REFERENCES project(id),
     CONSTRAINT fk_project_user FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
+
+CREATE TABLE refresh_token(
+    id SERIAL PRIMARY KEY ,
+    token VARCHAR(128) NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id BIGINT NOT NULL ,
+    CONSTRAINT FK_refresh_tokens_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT refresh_token_UNIQUE UNIQUE (user_id, id)
+);

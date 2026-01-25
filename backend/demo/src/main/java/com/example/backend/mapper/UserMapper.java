@@ -30,7 +30,8 @@ public interface UserMapper {
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "role", source = "user.role")
     @Mapping(target = "token", source = "token")
-    UserProfileDTO toUserProfileDTO(User user, String token);
+    @Mapping(target = "refreshToken", source = "refreshToken")
+    UserProfileDTO toUserProfileDTO(User user, String token, String refreshToken);
 
     @Mapping(target = "id", ignore = true)
     User createUserOwner(UserOwnerRequest userOwnerRequest);

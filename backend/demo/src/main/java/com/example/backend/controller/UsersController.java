@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -29,6 +30,7 @@ public class UsersController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     private ResponseEntity<GeneralResponse<UserDTO>> updateUser(@NotNull @PathVariable(name = "id") Integer id,@RequestBody UserUpdateRequest userUpdateRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         GeneralResponse<UserDTO> response = userService.updateUser(id, userUpdateRequest);
@@ -36,6 +38,7 @@ public class UsersController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     private ResponseEntity<Void> deleteUser(@NotNull @PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         userService.softDelete(id);

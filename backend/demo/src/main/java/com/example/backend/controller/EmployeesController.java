@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -30,6 +31,7 @@ public class EmployeesController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     private ResponseEntity<GeneralResponse<EmployeeDTO>> createEmployee(@RequestBody @Valid EmployeeRequest employeeRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         GeneralResponse<EmployeeDTO> response = employeeService.createEmployee(employeeRequest);
@@ -37,6 +39,7 @@ public class EmployeesController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     private ResponseEntity<GeneralResponse<EmployeeDTO>> updateEmployeeById(@PathVariable(name = "id") Integer employeeId, @RequestBody @Valid UpdateEmployeeRequest updateEmployeeRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
@@ -45,6 +48,7 @@ public class EmployeesController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     private ResponseEntity<GeneralResponse<EmployeeDTO>> softDeleteEmployeeById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 

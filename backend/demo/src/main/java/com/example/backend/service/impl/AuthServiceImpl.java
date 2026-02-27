@@ -49,7 +49,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public GeneralResponse<UserProfileDTO> login(@NotNull LoginRequest request) {
         try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
         }catch (BadCredentialsException e){
             throw new InvalidDataException(ApiErrorMessage.INVALID_USER_OR_PASSWORD.getMessage());

@@ -8,6 +8,7 @@ import com.example.backend.model.entities.Project;
 import com.example.backend.model.entities.RefreshToken;
 import com.example.backend.model.entities.User;
 import com.example.backend.model.enums.Role;
+import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.InvalidDataException;
 import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
 import com.example.backend.model.response.GeneralResponse;
@@ -67,8 +68,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public GeneralResponse<UserDTO> registerUserOwner(UserOwnerRequest userOwnerRequest){
-
+    public GeneralResponse<UserProfileDTO> registerUserOwner(UserOwnerRequest userOwnerRequest){
+        if(userRepository.existsUserByEmail(userOwnerRequest.getUserData().getEmail())){
+            throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS_BY_EMAIL.getMessage(userOwnerRequest.getUserData().getEmail()));
+        }
         try{
             projectService.createProject(userOwnerRequest);
         }catch (IllegalArgumentException e){
@@ -81,6 +84,7 @@ public class AuthServiceImpl implements AuthService {
         employee.setEmail(userOwnerRequest.getUserData().getEmail());
         employee.setPhone(userOwnerRequest.getEmployeeData().getPhone());
         employee.setCreatedAt(LocalDateTime.now());
+        employee.setUpdatedAt(LocalDateTime.now());
 
         Employee savedEmployee = employeeRepository.save(employee);
 
@@ -90,11 +94,16 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(Role.ADMIN);
         user.setEmployee(savedEmployee);
         user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
 
         userRepository.save(user);
 
-        UserDTO userDTO = userMapper.toUserDTO(user);
-        return GeneralResponse.createSuccessful(userDTO);
+        RefreshToken refreshToken = refreshTokenService.generateOrUpdateRefreshToken(user);
+        String token = jwtTokenProvider.generateToken(user);
+
+        UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
+        userProfileDTO.setToken(token);
+        return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 
     @Override

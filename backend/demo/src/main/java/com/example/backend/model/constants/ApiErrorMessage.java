@@ -15,7 +15,7 @@ public enum ApiErrorMessage {
     EMPLOYEE_ALREADY_EXIST_BY_EMAIL("Employee with email: %s already exist"),
 
     USER_NOT_FOUND_BY_ID("User not found by id: %s"),
-    USER_ALREADY_EXISTS_BY_EMAIL("User not found by id: %s"),
+    USER_ALREADY_EXISTS_BY_EMAIL("User already exists by email: %s"),
     EMAIL_NOT_EXISTS("Email %s not exists"),
 
 

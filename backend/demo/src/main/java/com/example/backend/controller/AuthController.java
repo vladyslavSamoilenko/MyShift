@@ -14,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -39,12 +38,15 @@ public class AuthController {
     }
 
     @PostMapping("/registerUserOwner")
-    public ResponseEntity<GeneralResponse<UserDTO>> registerUserOwner(@RequestBody UserOwnerRequest userOwnerRequest){
+    public ResponseEntity<?> registerUserOwner(@RequestBody UserOwnerRequest userOwnerRequest,
+                                                                             HttpServletResponse response){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        GeneralResponse<UserDTO> response = authService.registerUserOwner(userOwnerRequest);
+        GeneralResponse<UserProfileDTO> result = authService.registerUserOwner(userOwnerRequest);
+        Cookie authorizationCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
+        response.addCookie(authorizationCookie);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/refresh/token")

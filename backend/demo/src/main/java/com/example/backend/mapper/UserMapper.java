@@ -38,5 +38,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest userUpdateRequest);
+
+
 }
 

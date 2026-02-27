@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 //        }
 //        String passwordToString = password.toString();
 //        System.out.println(passwordToString);
-        return "HELLO";
+        return "SuperSecretPassword123!";
 
     }
 

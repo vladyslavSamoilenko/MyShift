@@ -2,6 +2,7 @@ package com.example.backend.service.impl;
 
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
+import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.Employee;
 import com.example.backend.model.entities.Project;
@@ -64,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtTokenProvider.generateToken(user);
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
+        userProfileDTO.setProjectId(user.getProject().getId());
         return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 
@@ -73,8 +75,9 @@ public class AuthServiceImpl implements AuthService {
         if(userRepository.existsUserByEmail(userOwnerRequest.getUserData().getEmail())){
             throw new DataExistException(ApiErrorMessage.USER_ALREADY_EXISTS_BY_EMAIL.getMessage(userOwnerRequest.getUserData().getEmail()));
         }
+        Project project;
         try{
-            projectService.createProject(userOwnerRequest);
+            project = projectService.createProject(userOwnerRequest);
         }catch (IllegalArgumentException e){
             throw new IllegalArgumentException(ApiErrorMessage.PROJECT_ALREADY_EXIST.getMessage());
         }
@@ -94,6 +97,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(userOwnerRequest.getUserData().getPassword()));
         user.setRole(Role.ADMIN);
         user.setEmployee(savedEmployee);
+        user.setProject(project);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -104,6 +108,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
+        userProfileDTO.setProjectId(user.getProject().getId());
         return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 

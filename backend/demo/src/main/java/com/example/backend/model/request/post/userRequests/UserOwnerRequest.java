@@ -20,6 +20,7 @@ public class UserOwnerRequest implements Serializable {
     public static class UserDto {
         private String email;
         private String password;
+        private String confirmPassword;
     }
 
     @Data

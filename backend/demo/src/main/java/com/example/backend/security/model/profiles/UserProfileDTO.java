@@ -12,6 +12,7 @@ public class UserProfileDTO implements Serializable {
 
     private Integer id;
     private String email;
+    private Integer projectId;
     private Role role;
     private String token;
     private String refreshToken;

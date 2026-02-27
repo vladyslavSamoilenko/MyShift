@@ -36,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public GeneralResponse<ProjectDTO> createProject(@NotNull UserOwnerRequest userOwnerRequest) {
+    public Project createProject(@NotNull UserOwnerRequest userOwnerRequest) {
         if(projectRepository.existsByName(userOwnerRequest.getProjectData().getName())){
             throw new DataExistException(ApiErrorMessage.PROJECT_ALREADY_EXIST.getMessage(userOwnerRequest.getProjectData().getName()));
         }
@@ -44,9 +44,8 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectMapper.createProject(userOwnerRequest);
         project.setUpdatedAt(LocalDateTime.now());
         Project savedProject = projectRepository.save(project);
-        ProjectDTO projectDTO = projectMapper.toProjectDTO(savedProject);
 
-        return GeneralResponse.createSuccessful(projectDTO);
+        return savedProject;
     }
 
     @Override

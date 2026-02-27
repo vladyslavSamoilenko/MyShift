@@ -4,9 +4,8 @@ package com.example.backend.mapper;
 import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.dto.ShiftDTO;
 import com.example.backend.model.entities.Project;
-import com.example.backend.model.request.post.projectRequests.ProjectRequest;
 import com.example.backend.model.request.post.projectRequests.UpdateProjectRequest;
-import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
+import com.example.backend.model.request.post.userRequests.RegisterUserOwnerRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.*;
 
@@ -25,7 +24,7 @@ public abstract class ProjectMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "projectData", target = ".")
-    public abstract Project createProject(UserOwnerRequest userOwnerRequest);
+    public abstract Project createProject(RegisterUserOwnerRequest registerUserOwnerRequest);
 
     @Mapping(target = "id", ignore = true)
     public abstract void updateProject(@MappingTarget Project project, UpdateProjectRequest request);

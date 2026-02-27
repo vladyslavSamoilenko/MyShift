@@ -1,9 +1,7 @@
 package com.example.backend.service;
 
-import com.example.backend.model.dto.EmployeeDTO;
 import com.example.backend.model.dto.UserDTO;
 import com.example.backend.model.entities.User;
-import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
 import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.model.response.GeneralResponse;
 import jakarta.validation.constraints.NotNull;

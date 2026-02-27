@@ -6,9 +6,8 @@ import com.example.backend.model.dto.ProjectDTO;
 import com.example.backend.model.entities.Project;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.NotFoundException;
-import com.example.backend.model.request.post.projectRequests.ProjectRequest;
 import com.example.backend.model.request.post.projectRequests.UpdateProjectRequest;
-import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
+import com.example.backend.model.request.post.userRequests.RegisterUserOwnerRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
@@ -36,12 +35,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project createProject(@NotNull UserOwnerRequest userOwnerRequest) {
-        if(projectRepository.existsByName(userOwnerRequest.getProjectData().getName())){
-            throw new DataExistException(ApiErrorMessage.PROJECT_ALREADY_EXIST.getMessage(userOwnerRequest.getProjectData().getName()));
+    public Project createProject(@NotNull RegisterUserOwnerRequest registerUserOwnerRequest) {
+        if(projectRepository.existsByName(registerUserOwnerRequest.getProjectData().getName())){
+            throw new DataExistException(ApiErrorMessage.PROJECT_ALREADY_EXIST.getMessage(registerUserOwnerRequest.getProjectData().getName()));
         }
 
-        Project project = projectMapper.createProject(userOwnerRequest);
+        Project project = projectMapper.createProject(registerUserOwnerRequest);
         project.setUpdatedAt(LocalDateTime.now());
         Project savedProject = projectRepository.save(project);
 

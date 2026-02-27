@@ -1,8 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
-import com.example.backend.model.dto.UserDTO;
-import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
+import com.example.backend.model.request.post.userRequests.RegisterUserOwnerRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.security.model.profiles.UserProfileDTO;
 import com.example.backend.security.model.requests.LoginRequest;
@@ -38,11 +37,11 @@ public class AuthController {
     }
 
     @PostMapping("/registerUserOwner")
-    public ResponseEntity<?> registerUserOwner(@RequestBody UserOwnerRequest userOwnerRequest,
+    public ResponseEntity<?> registerUserOwner(@RequestBody RegisterUserOwnerRequest registerUserOwnerRequest,
                                                                              HttpServletResponse response){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        GeneralResponse<UserProfileDTO> result = authService.registerUserOwner(userOwnerRequest);
+        GeneralResponse<UserProfileDTO> result = authService.registerUserOwner(registerUserOwnerRequest);
         Cookie authorizationCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
         response.addCookie(authorizationCookie);
 

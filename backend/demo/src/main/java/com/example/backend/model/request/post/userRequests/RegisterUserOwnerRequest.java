@@ -1,5 +1,4 @@
 package com.example.backend.model.request.post.userRequests;
-import com.example.backend.model.dto.ProjectDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserOwnerRequest implements Serializable {
+public class RegisterUserOwnerRequest implements Serializable {
     private UserDto userData;
 
     private EmployeeDto employeeData;

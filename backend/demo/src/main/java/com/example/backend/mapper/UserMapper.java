@@ -1,10 +1,8 @@
 package com.example.backend.mapper;
 
 import com.example.backend.model.dto.UserDTO;
-import com.example.backend.model.entities.Employee;
 import com.example.backend.model.entities.User;
-import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
-import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
+import com.example.backend.model.request.post.userRequests.RegisterUserOwnerRequest;
 import com.example.backend.model.request.post.userRequests.UserUpdateRequest;
 import com.example.backend.security.model.profiles.UserProfileDTO;
 import org.hibernate.type.descriptor.DateTimeUtils;
@@ -34,7 +32,7 @@ public interface UserMapper {
     UserProfileDTO toUserProfileDTO(User user, String token, String refreshToken);
 
     @Mapping(target = "id", ignore = true)
-    User createUserOwner(UserOwnerRequest userOwnerRequest);
+    User createUserOwner(RegisterUserOwnerRequest registerUserOwnerRequest);
 
     @Mapping(target = "id", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest userUpdateRequest);

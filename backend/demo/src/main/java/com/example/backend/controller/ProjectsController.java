@@ -31,7 +31,7 @@ public class ProjectsController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<GeneralResponse<ProjectDTO>> updateProjectById(@PathVariable(name = "id") Integer id, @RequestBody @Valid UpdateProjectRequest request){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
@@ -40,7 +40,7 @@ public class ProjectsController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Void> softDeletedById(@PathVariable(name = "id") Integer projectId ){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 

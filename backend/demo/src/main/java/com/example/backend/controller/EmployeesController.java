@@ -23,7 +23,7 @@ public class EmployeesController {
     private final EmployeeService employeeService;
 
     @GetMapping("/{id}")
-    private ResponseEntity<GeneralResponse<EmployeeDTO>> getEmployeeById(@PathVariable(name = "id") Integer employeeId){
+    public ResponseEntity<GeneralResponse<EmployeeDTO>> getEmployeeById(@PathVariable(name = "id") Integer employeeId){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         GeneralResponse<EmployeeDTO> response = employeeService.getById(employeeId);
@@ -31,16 +31,16 @@ public class EmployeesController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    private ResponseEntity<GeneralResponse<EmployeeDTO>> createEmployee(@RequestBody @Valid EmployeeRequest employeeRequest){
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    public ResponseEntity<GeneralResponse<EmployeeDTO>> createEmployee(@RequestBody @Valid EmployeeRequest employeeRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         GeneralResponse<EmployeeDTO> response = employeeService.createEmployee(employeeRequest);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    private ResponseEntity<GeneralResponse<EmployeeDTO>> updateEmployeeById(@PathVariable(name = "id") Integer employeeId, @RequestBody @Valid UpdateEmployeeRequest updateEmployeeRequest){
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    public ResponseEntity<GeneralResponse<EmployeeDTO>> updateEmployeeById(@PathVariable(name = "id") Integer employeeId, @RequestBody @Valid UpdateEmployeeRequest updateEmployeeRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         GeneralResponse<EmployeeDTO> updateEmpoyee = employeeService.updateEmployee(employeeId,updateEmployeeRequest);
@@ -48,8 +48,8 @@ public class EmployeesController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    private ResponseEntity<GeneralResponse<EmployeeDTO>> softDeleteEmployeeById(@PathVariable(name = "id") Integer id){
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    public ResponseEntity<GeneralResponse<EmployeeDTO>> softDeleteEmployeeById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         employeeService.softDeleteEmployee(id);

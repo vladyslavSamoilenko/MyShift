@@ -24,7 +24,7 @@ CREATE TABLE users (
        email VARCHAR(255) NOT NULL UNIQUE ,
        role VARCHAR(50) NOT NULL,
        employee_id INT UNIQUE,
-       project_id INT UNIQUE ,
+       project_id INT ,
        created_at TIMESTAMP NOT NULL,
        updated_at TIMESTAMP NOT NULL,
        deleted BOOLEAN not null default false,

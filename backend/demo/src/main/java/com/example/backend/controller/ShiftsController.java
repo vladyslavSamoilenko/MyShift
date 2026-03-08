@@ -27,7 +27,7 @@ public class ShiftsController {
     private final ShiftService shiftService;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('WORKER', 'ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<ShiftDTO>> getShiftById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage());
         GeneralResponse<ShiftDTO> response = shiftService.getById(id);
@@ -35,7 +35,7 @@ public class ShiftsController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<ShiftDTO>> createShift(@RequestBody ShiftRequest shiftRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage());
         GeneralResponse<ShiftDTO> response = shiftService.createShift(shiftRequest);
@@ -43,7 +43,7 @@ public class ShiftsController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<ShiftDTO>> updateShift(@PathVariable(name = "id") Integer id,
                                                                  @RequestBody UpdateShiftRequest updateShiftRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage());
@@ -52,7 +52,7 @@ public class ShiftsController {
     }
 
     @DeleteMapping("/{id}/byDate")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShiftByIdAndDate(@PathVariable(name = "id") Integer id,
                                                                  @RequestBody ShiftDateRequest deleteDateRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
@@ -61,7 +61,7 @@ public class ShiftsController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<ShiftDTO>> deleteShiftById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         shiftService.deleteShiftById(id);
@@ -69,7 +69,7 @@ public class ShiftsController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('WORKER', 'ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<PaginationResponse<ShiftDTO>>> searchShifts(@RequestBody @Valid ShiftSearchRequest request,
                                                                                       @RequestParam(name = "page", defaultValue = "0") int page,
                                                                                       @RequestParam(name = "limit", defaultValue = "10") int limit){
@@ -81,7 +81,7 @@ public class ShiftsController {
     }
 
     @PutMapping("/updateShiftStatus/{id}")
-    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('WORKER', 'ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<ShiftDTO>> setShiftStatus(@PathVariable(name = "id") Integer id,
                                                                     @RequestBody ShiftStatusRequest shiftStatusRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());

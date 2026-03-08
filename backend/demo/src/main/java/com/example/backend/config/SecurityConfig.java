@@ -1,5 +1,6 @@
 package com.example.backend.config;
 
+import com.example.backend.model.enums.Role;
 import com.example.backend.security.model.JwtRequestFilter;
 import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -67,4 +68,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
+
 }

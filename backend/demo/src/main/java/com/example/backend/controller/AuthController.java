@@ -1,8 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.constants.ApiLogMessage;
-import com.example.backend.model.dto.UserDTO;
-import com.example.backend.model.request.post.userRequests.UserOwnerRequest;
+import com.example.backend.model.request.post.userRequests.RegisterUserOwnerRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.security.model.profiles.UserProfileDTO;
 import com.example.backend.security.model.requests.LoginRequest;
@@ -14,7 +13,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -35,16 +33,19 @@ public class AuthController {
         Cookie authorizationCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
         response.addCookie(authorizationCookie);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/registerUserOwner")
-    public ResponseEntity<GeneralResponse<UserDTO>> registerUserOwner(@RequestBody UserOwnerRequest userOwnerRequest){
+    public ResponseEntity<?> registerUserOwner(@RequestBody RegisterUserOwnerRequest registerUserOwnerRequest,
+                                                                             HttpServletResponse response){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        GeneralResponse<UserDTO> response = authService.registerUserOwner(userOwnerRequest);
+        GeneralResponse<UserProfileDTO> result = authService.registerUserOwner(registerUserOwnerRequest);
+        Cookie authorizationCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
+        response.addCookie(authorizationCookie);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/refresh/token")

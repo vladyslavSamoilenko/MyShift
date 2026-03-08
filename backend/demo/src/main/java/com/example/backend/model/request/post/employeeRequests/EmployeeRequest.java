@@ -1,6 +1,7 @@
 package com.example.backend.model.request.post.employeeRequests;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,6 @@ public class EmployeeRequest implements Serializable {
     private String email;
     @NotBlank(message = "Must contains employee role: ADMIN, MANAGER, WORKER")
     private String role;
+    @NotNull(message = "Must contains project id")
+    private Integer projectId;
 }

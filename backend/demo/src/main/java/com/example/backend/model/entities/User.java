@@ -36,6 +36,10 @@ public class User {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
+    @OneToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

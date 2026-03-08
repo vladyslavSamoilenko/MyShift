@@ -4,6 +4,7 @@ import com.example.backend.mapper.EmployeeMapper;
 import com.example.backend.model.constants.ApiErrorMessage;
 import com.example.backend.model.dto.EmployeeDTO;
 import com.example.backend.model.entities.Employee;
+import com.example.backend.model.entities.Project;
 import com.example.backend.model.entities.User;
 import com.example.backend.model.enums.Role;
 import com.example.backend.model.exception.DataExistException;
@@ -12,6 +13,7 @@ import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
 import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import com.example.backend.model.response.GeneralResponse;
 import com.example.backend.repository.EmployeeRepository;
+import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.EmployeeService;
 import com.example.backend.service.UserService;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final ProjectRepository projectRepository;
 
     @Override
     public GeneralResponse<EmployeeDTO> getById(@NotNull Integer id) {
@@ -52,11 +55,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdatedAt(LocalDateTime.now());
         Employee savedEmployee = employeeRepository.save(employee);
 
+        Project project = projectRepository.findById(employeeRequest.getProjectId())
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.PROJECT_NOT_FOUND_BY_ID.getMessage(employeeRequest.getProjectId())));
+
         User user = new User();
         user.setEmail(employee.getEmail());
         user.setPassword(passwordEncoder.encode(userService.createDefaultPassword()));
         user.setRole(Role.valueOf(employeeRequest.getRole()));
         user.setEmployee(employee);
+        user.setProject(project);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         userService.createUser(user);

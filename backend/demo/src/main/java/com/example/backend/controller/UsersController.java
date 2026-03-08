@@ -22,7 +22,7 @@ public class UsersController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    private ResponseEntity<GeneralResponse<UserDTO>> getById(@PathVariable(name = "id") Integer id){
+    public ResponseEntity<GeneralResponse<UserDTO>> getById(@PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         GeneralResponse<UserDTO> response =userService.getById(id);
@@ -31,7 +31,7 @@ public class UsersController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    private ResponseEntity<GeneralResponse<UserDTO>> updateUser(@NotNull @PathVariable(name = "id") Integer id,@RequestBody UserUpdateRequest userUpdateRequest){
+    public ResponseEntity<GeneralResponse<UserDTO>> updateUser(@NotNull @PathVariable(name = "id") Integer id,@RequestBody UserUpdateRequest userUpdateRequest){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         GeneralResponse<UserDTO> response = userService.updateUser(id, userUpdateRequest);
         return ResponseEntity.ok(response);
@@ -39,7 +39,7 @@ public class UsersController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    private ResponseEntity<Void> deleteUser(@NotNull @PathVariable(name = "id") Integer id){
+    public ResponseEntity<Void> deleteUser(@NotNull @PathVariable(name = "id") Integer id){
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
         userService.softDelete(id);
         return ResponseEntity.ok().build();

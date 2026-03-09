@@ -3,6 +3,7 @@ package com.example.backend.advice;
 import com.example.backend.model.constants.ApiConstants;
 import com.example.backend.model.exception.DataExistException;
 import com.example.backend.model.exception.InvalidPasswordException;
+import com.example.backend.model.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ import java.util.Objects;
 @Slf4j
 @ControllerAdvice
 public class CommonControllerAdvice {
-    @ExceptionHandler
+    @ExceptionHandler(NotFoundException.class)
     @ResponseBody
     protected ResponseEntity<String> handleNotFoundException(Exception ex) {
         logStackTrace(ex);

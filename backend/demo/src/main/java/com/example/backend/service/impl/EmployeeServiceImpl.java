@@ -12,16 +12,21 @@ import com.example.backend.model.exception.NotFoundException;
 import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
 import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import com.example.backend.model.response.GeneralResponse;
+import com.example.backend.model.response.PaginationResponse;
 import com.example.backend.repository.EmployeeRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.EmployeeService;
 import com.example.backend.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +87,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         EmployeeDTO employeeDTO = employeeMapper.toEmployeeDTO(employee);
         return GeneralResponse.createSuccessful(employeeDTO);
+    }
+
+    @Override
+    public GeneralResponse<PaginationResponse<EmployeeDTO>> getAllByProjectId(@NotNull Integer projectId, int page, int limit) {
+
+        Pageable pageable = PageRequest.of(page, limit);
+
+        Page<Employee> employeePage = employeeRepository.findAllEmployeesByProjectId(projectId, pageable);
+
+        List<EmployeeDTO> employeeDTOs = employeePage.getContent().stream()
+                .map(employeeMapper::toEmployeeDTO)
+                .toList();
+
+        PaginationResponse.Pagination pagination = PaginationResponse.Pagination.builder()
+                .total(employeePage.getTotalElements())
+                .limit(limit)
+                .page(page)
+                .pages(employeePage.getTotalPages())
+                .build();
+
+        PaginationResponse<EmployeeDTO> paginationResponse = PaginationResponse.<EmployeeDTO>builder()
+                .content(employeeDTOs)
+                .pagination(pagination)
+                .build();
+
+        return GeneralResponse.createSuccessful(paginationResponse);
     }
 
     @Override

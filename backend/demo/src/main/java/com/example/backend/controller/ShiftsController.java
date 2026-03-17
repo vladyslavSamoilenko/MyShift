@@ -68,7 +68,7 @@ public class ShiftsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     @PreAuthorize("hasAnyAuthority('WORKER', 'ADMIN', 'MANAGER')")
     public ResponseEntity<GeneralResponse<PaginationResponse<ShiftDTO>>> searchShifts(@RequestBody @Valid ShiftSearchRequest request,
                                                                                       @RequestParam(name = "page", defaultValue = "0") int page,

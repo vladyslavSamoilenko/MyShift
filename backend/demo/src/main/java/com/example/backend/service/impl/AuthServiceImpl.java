@@ -69,6 +69,8 @@ public class AuthServiceImpl implements AuthService {
         return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 
+
+
     @Override
     @Transactional
     public GeneralResponse<UserProfileDTO> registerUserOwner(RegisterUserOwnerRequest registerUserOwnerRequest){

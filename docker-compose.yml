@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: shiftmanager-db
+    environment:
+      POSTGRES_DB: MyShiftdb
+      POSTGRES_USER: postgres      
+      POSTGRES_PASSWORD: password  
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    image: backend 
+    container_name: shiftmanager-backend
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/MyShiftdb
+      - SPRING_DATASOURCE_USERNAME=postgres    
+      - SPRING_DATASOURCE_PASSWORD=admin     
+      - SPRING_PROFILES_ACTIVE=local-idea
+    depends_on:
+      - db 
+    restart: unless-stopped
+
+  client:
+    image: client 
+    container_name: shiftmanager-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend 
+    restart: unless-stopped
+
+volumes:
+  pgdata:

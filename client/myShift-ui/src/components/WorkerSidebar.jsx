@@ -1,4 +1,3 @@
-// src/components/WorkerSidebar.jsx
 export default function WorkerSidebar({ isOpen, onClose, activeTab, setActiveTab }) {
   if (!isOpen) return null;
 
@@ -11,10 +10,8 @@ export default function WorkerSidebar({ isOpen, onClose, activeTab, setActiveTab
 
   return (
     <>
-      {/* Затемнение фона */}
       <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40" onClick={onClose}></div>
       
-      {/* Сама панель */}
       <div className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 flex flex-col transform transition-transform duration-300">
         <div className="flex justify-between items-center p-6 border-b border-slate-100">
           <h2 className="text-xl font-bold text-slate-800">Menu</h2>

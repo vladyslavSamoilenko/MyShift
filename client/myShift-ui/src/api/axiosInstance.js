@@ -28,7 +28,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.warn("Токен истек или недействителен. Требуется повторная авторизация.");
+      console.warn("Token invalid. Register or login");
       localStorage.removeItem('user');
       window.location.href = '/login'; 
     }

@@ -1,4 +1,3 @@
-// src/components/WeeklyCalendar.jsx
 import { useState } from 'react';
 
 const getStartOfWeek = (date) => {
@@ -76,7 +75,7 @@ export default function WeeklyCalendar({ shifts, employees }) {
                   <div className="space-y-3 mt-2">
                     {dayShifts.map(shift => {
                       const emp = getEmployee(shift.employeeId);
-                      const colorClass = getBorderColor(emp.id); // Цветная полоска
+                      const colorClass = getBorderColor(emp.id);
 
                       return (
                         <div key={shift.id} className={`bg-white p-3 rounded-xl shadow-sm border border-slate-100 border-l-4 ${colorClass} hover:shadow-md transition-all cursor-pointer`}>

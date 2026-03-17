@@ -1,4 +1,3 @@
-// src/components/StatCard.jsx
 export default function StatCard({ title, value, subtitle, icon, iconColor, bgColor }) {
   return (
     <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition-shadow">

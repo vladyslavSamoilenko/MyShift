@@ -1,4 +1,3 @@
-// src/pages/WorkerDashboard.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axiosInstance';
@@ -12,11 +11,9 @@ export default function WorkerDashboard() {
   const [activeTab, setActiveTab] = useState('schedule');
   const [shifts, setShifts] = useState([]);
 
-  // Загружаем смены работника через POST запрос (поиск)
   const fetchMyShifts = useCallback(async () => {
     if (!user?.id) return;
     try {
-      // Отправляем POST запрос с фильтром по userId
       const res = await api.post('/shifts/search', { userId: user.id });
       if (res.data && res.data.payload) {
         setShifts(res.data.payload.content || res.data.payload);
@@ -29,7 +26,7 @@ export default function WorkerDashboard() {
   const handleStatusChange = async (shiftId, newStatus) => {
     try {
       await api.put(`/shifts/updateShiftStatus/${shiftId}`, { status: newStatus });
-      fetchMyShifts(); // Мгновенно обновляем список
+      fetchMyShifts();
     } catch (error) {
       alert(error.response?.data?.message || 'Błąd aktualizacji statusu');
     }
@@ -43,13 +40,11 @@ export default function WorkerDashboard() {
     loadData();
   }, [fetchMyShifts]);
 
-  // Считаем часы (для демо просто умножаем смены на 8, в реале нужно считать разницу startTime/endTime)
   const totalHours = shifts.length * 8; 
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans pb-12">
       
-      {/* Шапка (Header) */}
       <header className="bg-white px-6 py-4 shadow-sm flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-4">
           <div className="bg-indigo-600 text-white w-12 h-12 rounded-xl flex items-center justify-center shadow-md">
@@ -66,7 +61,6 @@ export default function WorkerDashboard() {
         </button>
       </header>
 
-      {/* Сайдбар */}
       <WorkerSidebar 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
@@ -76,10 +70,8 @@ export default function WorkerDashboard() {
 
       <main className="max-w-3xl mx-auto px-6 mt-8">
         
-        {/* Вкладка: Мой График (Основная) */}
         {activeTab === 'schedule' && (
           <div className="space-y-8 animate-fade-in">
-            {/* Карточки статистики */}
             <div className="grid grid-cols-1 gap-4">
               <StatCard 
                 title="Ten tydzień" value={shifts.length} subtitle="zmian" 
@@ -98,7 +90,6 @@ export default function WorkerDashboard() {
               />
             </div>
 
-            {/* Список смен */}
             <div>
               <h2 className="text-2xl font-bold text-slate-800 mb-6 tracking-tight">Mój Grafik</h2>
               <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 min-h-[200px]">
@@ -119,12 +110,10 @@ export default function WorkerDashboard() {
         </div>
 
         <div className="flex flex-col items-end gap-2">
-          {/* Статус */}
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
             {shift.status === 'PLANNED' ? 'Zaplanowana' : shift.status}
           </span>
 
-          {/* Кнопки управления */}
           <div className="flex gap-2">
             {shift.status === 'PLANNED' && (
               <button onClick={() => handleStatusChange(shift.id, 'PRESENT')} className="text-emerald-700 bg-emerald-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-emerald-200 transition-colors flex items-center gap-1 shadow-sm">
@@ -167,7 +156,6 @@ export default function WorkerDashboard() {
           </div>
         )}
 
-        {/* Заглушки для остальных вкладок, чтобы меню работало */}
         {activeTab === 'notifications' && (
           <div><h2 className="text-2xl font-bold text-slate-800 mb-6">Powiadomienia</h2><div className="bg-white p-6 rounded-3xl">Brak nowych powiadomień.</div></div>
         )}

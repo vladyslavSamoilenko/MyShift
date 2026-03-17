@@ -1,4 +1,3 @@
-// src/pages/RegisterPage.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -31,7 +30,7 @@ export default function RegisterPage() {
         login(data.payload);
         navigate('/admin');
       } else {
-        alert('Ошибка регистрации');
+        alert('Registration Error');
       }
     } catch (error) {
       console.error(error);
@@ -43,27 +42,27 @@ export default function RegisterPage() {
   return (
     <div className="flex items-center justify-center min-h-screen py-10">
       <form onSubmit={handleSubmit} className="p-8 bg-white rounded-xl shadow-md w-[500px]">
-        <h2 className="text-2xl font-bold mb-6 text-center">Регистрация бизнеса</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Założ konto</h2>
         
-        <h3 className="font-semibold mt-4 mb-2">Данные аккаунта</h3>
+        <h3 className="font-semibold mt-4 mb-2">Dane konta</h3>
         <input name="email" type="email" placeholder="Email" required className="w-full mb-2 p-2 border rounded" onChange={handleChange} />
         <div className="flex gap-2 mb-2">
-          <input name="password" type="password" placeholder="Пароль" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
-          <input name="confirmPassword" type="password" placeholder="Повторите пароль" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
+          <input name="password" type="password" placeholder="Hasło" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
+          <input name="confirmPassword" type="password" placeholder="Powtórz hasło" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
         </div>
 
-        <h3 className="font-semibold mt-4 mb-2">Данные руководителя</h3>
+        <h3 className="font-semibold mt-4 mb-2">Dane kierownika</h3>
         <div className="flex gap-2 mb-2">
-          <input name="firstName" placeholder="Имя" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
-          <input name="lastName" placeholder="Фамилия" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
+          <input name="firstName" placeholder="Imie" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
+          <input name="lastName" placeholder="Nazwisko" required className="w-1/2 p-2 border rounded" onChange={handleChange} />
         </div>
-        <input name="phone" placeholder="Телефон" required className="w-full mb-2 p-2 border rounded" onChange={handleChange} />
+        <input name="phone" placeholder="Nr telefonu" required className="w-full mb-2 p-2 border rounded" onChange={handleChange} />
 
-        <h3 className="font-semibold mt-4 mb-2">Проект (Бизнес)</h3>
-        <input name="projectName" placeholder="Название проекта" required className="w-full mb-2 p-2 border rounded" onChange={handleChange} />
-        <textarea name="projectDescription" placeholder="Описание" className="w-full mb-6 p-2 border rounded" onChange={handleChange} />
+        <h3 className="font-semibold mt-4 mb-2">Firma</h3>
+        <input name="projectName" placeholder="Nazwa firmy" required className="w-full mb-2 p-2 border rounded" onChange={handleChange} />
+        <textarea name="projectDescription" placeholder="Opis" className="w-full mb-6 p-2 border rounded" onChange={handleChange} />
 
-        <button type="submit" className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Создать бизнес</button>
+        <button type="submit" className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Zarejestruj firmę</button>
       </form>
     </div>
   );

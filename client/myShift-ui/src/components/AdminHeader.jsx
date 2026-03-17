@@ -1,4 +1,3 @@
-// src/components/AdminHeader.jsx
 export default function AdminHeader({ logout }) {
   return (
     <header className="bg-white flex items-center justify-between px-8 py-4 shadow-sm">

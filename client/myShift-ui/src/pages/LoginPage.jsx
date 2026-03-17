@@ -1,8 +1,8 @@
 // src/pages/LoginPage.jsx
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import api from '../api/axiosInstance'; // <-- ДОБАВИЛИ ИМПОРТ API!
+import { useNavigate, Link } from 'react-router-dom';
+import api from '../api/axiosInstance';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,18 +17,10 @@ export default function LoginPage() {
     setError('');
     
     try {
-      // 1. Делаем реальный запрос к бэкенду. 
-      // ВНИМАНИЕ: Проверь путь! Обычно в Spring это '/auth/login' или просто '/login'
       const response = await api.post('/auth/login', { email, password });
-      
-      // 2. Достаем данные юзера из ответа бэкенда. 
-      // Зависит от структуры твоего JSON. У тебя обычно данные лежат в payload
       const userData = response.data.payload || response.data;
       
-      // 3. Сохраняем реальный объект с ролью в LocalStorage и стейт!
       login(userData);
-      
-      // 4. Переходим на главную, где App.jsx нас правильно раскидает по ролям
       navigate('/');
       
     } catch (err) {
@@ -41,7 +33,6 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
       <div className="bg-white max-w-md w-full rounded-[2rem] shadow-2xl p-10 animate-fade-in">
         
-        {/* Логотип и заголовок */}
         <div className="flex flex-col items-center mb-10">
           <div className="bg-indigo-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg mb-5">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +43,6 @@ export default function LoginPage() {
           <p className="text-sm text-slate-500 font-medium mt-2">Zaloguj się, aby kontynuować</p>
         </div>
 
-        {/* Форма */}
         <form onSubmit={handleSubmit} className="space-y-5">
           
           {error && (
@@ -91,6 +81,13 @@ export default function LoginPage() {
           >
             Zaloguj się
           </button>
+
+          <p className="mt-8 text-center text-sm text-slate-500 font-medium">
+            Nie masz jeszcze konta?{' '}
+            <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-bold hover:underline transition-all">
+              Zarejestruj firmę
+            </Link>
+          </p>
         </form>
       </div>
     </div>

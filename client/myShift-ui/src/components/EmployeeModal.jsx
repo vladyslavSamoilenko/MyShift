@@ -6,9 +6,7 @@ export default function EmployeeModal({ isOpen, onClose, projectId, onSuccess, e
     firstName: '', lastName: '', phone: '', email: '', role: 'WORKER', projectId: projectId 
   });
 
-  // Если открыли для редактирования — заполняем форму старыми данными
   useEffect(() => {
-    // Оборачиваем в таймер, чтобы обновление прошло асинхронно и линтер успокоился
     const timer = setTimeout(() => {
       if (employeeToEdit) {
         setEmpForm({
@@ -20,12 +18,10 @@ export default function EmployeeModal({ isOpen, onClose, projectId, onSuccess, e
           projectId: projectId
         });
       } else {
-        // Если создание — очищаем форму
         setEmpForm({ firstName: '', lastName: '', phone: '', email: '', role: 'WORKER', projectId: projectId });
       }
     }, 0);
 
-    // Очищаем таймер, чтобы избежать утечек памяти
     return () => clearTimeout(timer);
   }, [employeeToEdit, projectId, isOpen]);
 
@@ -35,10 +31,8 @@ export default function EmployeeModal({ isOpen, onClose, projectId, onSuccess, e
     e.preventDefault();
     try {
       if (employeeToEdit) {
-        // Если есть employeeToEdit, делаем PUT запрос на обновление
         await api.put(`/employees/${employeeToEdit.id}`, empForm);
       } else {
-        // Иначе POST на создание
         await api.post('/employees/create', empForm);
       }
       onSuccess();

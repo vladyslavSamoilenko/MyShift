@@ -10,14 +10,13 @@ import WeeklyCalendar from '../components/WeeklyCalendar';
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const [employeeToEdit, setEmployeeToEdit] = useState(null);
-  const [activeTab, setActiveTab] = useState('calendar'); // Пусть календарь открывается по умолчанию
+  const [activeTab, setActiveTab] = useState('calendar'); 
   const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false);
   const [isShiftModalOpen, setIsShiftModalOpen] = useState(false);
   
   const [employees, setEmployees] = useState([]);
-  const [shifts, setShifts] = useState([]); // Та самая переменная!
+  const [shifts, setShifts] = useState([]); 
 
-  // 1. Загрузка сотрудников
   const fetchEmployees = useCallback(async () => {
     if (!user?.projectId) return; 
     try {
@@ -30,7 +29,6 @@ export default function AdminDashboard() {
     }
   }, [user]);
 
-  // 2. Загрузка смен для календаря
   const fetchProjectShifts = useCallback(async () => {
     if (!user?.projectId) return;
     try {
@@ -43,7 +41,6 @@ export default function AdminDashboard() {
     }
   }, [user]);
 
-  // 3. Вызываем обе функции при загрузке
   useEffect(() => {
     const loadData = async () => {
       await fetchEmployees();
@@ -59,7 +56,6 @@ export default function AdminDashboard() {
       <AdminHeader logout={logout} />
 
       <main className="max-w-6xl mx-auto px-6 mt-8">
-        {/* Вкладки */}
         <div className="bg-white p-1.5 rounded-2xl shadow-sm flex mb-8 max-w-2xl mx-auto">
           <button onClick={() => setActiveTab('calendar')} className={`flex-1 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${activeTab === 'calendar' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-50'}`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -71,7 +67,6 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        {/* Контент */}
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 min-h-[600px]">
           
           {activeTab === 'employees' && (
@@ -101,7 +96,6 @@ export default function AdminDashboard() {
                       </div>
                   </div>
         
-                    {/* Кнопка Редактировать */}
                    <button 
                       onClick={() => { setEmployeeToEdit(emp); setIsEmployeeModalOpen(true); }}
                      className="text-indigo-500 hover:bg-indigo-50 p-2.5 rounded-xl transition-colors"
@@ -126,7 +120,6 @@ export default function AdminDashboard() {
                 </button>
               </div>
               
-              {/* А вот и использование наших переменных! */}
               <WeeklyCalendar shifts={shifts} employees={employees} />
             </div>
           )}
@@ -146,7 +139,7 @@ export default function AdminDashboard() {
         onClose={() => setIsShiftModalOpen(false)} 
         projectId={user?.projectId}
         employees={employees} 
-        onSuccess={fetchProjectShifts} // Обновляем календарь после добавления смены
+        onSuccess={fetchProjectShifts}
       />
     </div>
   );

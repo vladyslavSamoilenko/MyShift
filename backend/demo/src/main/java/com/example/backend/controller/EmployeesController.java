@@ -5,6 +5,7 @@ import com.example.backend.model.dto.EmployeeDTO;
 import com.example.backend.model.request.post.employeeRequests.EmployeeRequest;
 import com.example.backend.model.request.post.employeeRequests.UpdateEmployeeRequest;
 import com.example.backend.model.response.GeneralResponse;
+import com.example.backend.model.response.PaginationResponse;
 import com.example.backend.service.EmployeeService;
 import com.example.backend.utils.ApiUtils;
 import jakarta.validation.Valid;
@@ -55,4 +56,18 @@ public class EmployeesController {
         employeeService.softDeleteEmployee(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/project/{projectId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    public ResponseEntity<GeneralResponse<PaginationResponse<EmployeeDTO>>> getEmployeesByProjectId(
+            @PathVariable(name = "projectId") Integer projectId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "limit", defaultValue = "100") int limit) {
+
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        GeneralResponse<PaginationResponse<EmployeeDTO>> response = employeeService.getAllByProjectId(projectId, page, limit);
+        return ResponseEntity.ok(response);
+    }
+
 }

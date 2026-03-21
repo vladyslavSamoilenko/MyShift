@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axiosInstance';
 import WorkerSidebar from '../components/WorkerSidebar';
 import StatCard from '../components/StatCard';
+import LeaveRequestsWorker from '../components/LeaveRequestsWorker';
+import WorkerAvailability from '../components/WorkerAvailability';
 
 export default function WorkerDashboard() {
   const { user, logout } = useAuth();
@@ -99,76 +101,86 @@ export default function WorkerDashboard() {
                    <p className="text-slate-500 text-center py-6">Brak zaplanowanych zmian na ten tydzień.</p>
                 ) : (
                   <div className="space-y-4">
-    {shifts.map(shift => (
-      <div key={shift.id} className="p-5 border border-slate-100 rounded-2xl flex justify-between items-center hover:bg-slate-50 transition-colors shadow-sm">
-        
-        <div className="flex flex-col">
-          <p className="font-bold text-slate-800 text-lg mb-1">{shift.shiftDate}</p>
-          <p className="text-sm font-semibold text-slate-500 bg-white border border-slate-200 inline-block px-3 py-1 rounded-lg w-max">
-            {shift.startTime} - {shift.endTime}
-          </p>
-        </div>
+                    {shifts.map(shift => (
+                      <div key={shift.id} className="p-5 border border-slate-100 rounded-2xl flex justify-between items-center hover:bg-slate-50 transition-colors shadow-sm">
+                        
+                        <div className="flex flex-col">
+                          <p className="font-bold text-slate-800 text-lg mb-1">{shift.shiftDate}</p>
+                          <p className="text-sm font-semibold text-slate-500 bg-white border border-slate-200 inline-block px-3 py-1 rounded-lg w-max">
+                            {shift.startTime} - {shift.endTime}
+                          </p>
+                        </div>
+                        
+                        
+                        <div className="flex flex-col items-end gap-2">
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                            {shift.status === 'PLANNED' ? 'Zaplanowana' : shift.status}
+                          </span>
 
-        <div className="flex flex-col items-end gap-2">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-            {shift.status === 'PLANNED' ? 'Zaplanowana' : shift.status}
-          </span>
-
-          <div className="flex gap-2">
-            {shift.status === 'PLANNED' && (
-              <button onClick={() => handleStatusChange(shift.id, 'PRESENT')} className="text-emerald-700 bg-emerald-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-emerald-200 transition-colors flex items-center gap-1 shadow-sm">
-                ▶ Rozpocznij
-              </button>
-            )}
-            
-            {shift.status === 'PRESENT' && (
-              <>
-                <button onClick={() => handleStatusChange(shift.id, 'BREAK_START')} className="text-amber-700 bg-amber-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-amber-200 transition-colors shadow-sm">
-                  ⏸ Przerwa
-                </button>
-                <button onClick={() => handleStatusChange(shift.id, 'FINISHED')} className="text-rose-700 bg-rose-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-rose-200 transition-colors shadow-sm">
-                  ⏹ Zakończ
-                      </button>
-                            </>
-                              )}
+                          <div className="flex gap-2">
+                            {shift.status === 'PLANNED' && (
+                              <button onClick={() => handleStatusChange(shift.id, 'PRESENT')} className="text-emerald-700 bg-emerald-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-emerald-200 transition-colors flex items-center gap-1 shadow-sm">
+                                ▶ Rozpocznij
+                              </button>
+                            )}
+                            
+                            {shift.status === 'PRESENT' && (
+                              <>
+                                <button onClick={() => handleStatusChange(shift.id, 'BREAK_START')} className="text-amber-700 bg-amber-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-amber-200 transition-colors shadow-sm">
+                                  ⏸ Przerwa
+                                </button>
+                                <button onClick={() => handleStatusChange(shift.id, 'FINISHED')} className="text-rose-700 bg-rose-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-rose-200 transition-colors shadow-sm">
+                                  ⏹ Zakończ
+                                </button>
+                              </>
+                            )}
 
                             {shift.status === 'BREAK_START' && (
                               <button onClick={() => handleStatusChange(shift.id, 'BREAK_END')} className="text-blue-700 bg-blue-100 px-4 py-2 rounded-xl text-sm font-bold hover:bg-blue-200 transition-colors shadow-sm">
                                ▶ Wznów pracę
                               </button>
-                              )}
-            
+                            )}
+                            
                             {shift.status === 'FINISHED' && (
                               <span className="text-emerald-500 font-bold flex items-center gap-1">
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                                 Zakończona
-                             </span>
-                          )}
+                              </span>
+                            )}
                           </div>
                         </div>
 
-                    </div>
+                      </div>
                     ))}
                   </div>
                 )}
               </div>
             </div>
+
+            <div className="mt-8">
+               <LeaveRequestsWorker />
+            </div>
+
           </div>
         )}
 
         {activeTab === 'notifications' && (
           <div><h2 className="text-2xl font-bold text-slate-800 mb-6">Powiadomienia</h2><div className="bg-white p-6 rounded-3xl">Brak nowych powiadomień.</div></div>
         )}
+        
         {activeTab === 'profile' && (
           <div>
             <h2 className="text-2xl font-bold text-slate-800 mb-6">Mój Profil</h2>
-            <div className="bg-white p-6 rounded-3xl flex flex-col items-center">
+            <div className="bg-white p-6 rounded-3xl flex flex-col items-center mb-8">
                <div className="w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner">👩‍🍳</div>
                <h3 className="text-xl font-bold">{user?.email}</h3>
                <button onClick={logout} className="mt-6 text-rose-500 font-bold px-4 py-2 hover:bg-rose-50 rounded-xl">Wyloguj się</button>
             </div>
+            
+            <WorkerAvailability />
           </div>
         )}
+        
         {activeTab === 'settings' && (
           <div><h2 className="text-2xl font-bold text-slate-800 mb-6">Ustawienia</h2><div className="bg-white p-6 rounded-3xl">Ustawienia konta (w budowie).</div></div>
         )}

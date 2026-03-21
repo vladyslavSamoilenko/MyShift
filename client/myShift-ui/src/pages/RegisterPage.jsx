@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/axiosInstance';
 
 export default function RegisterPage() {
   const { login } = useAuth();
@@ -20,20 +21,13 @@ export default function RegisterPage() {
     };
 
     try {
-      const response = await fetch('/auth/registerUserOwner', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      if (response.ok) {
-        login(data.payload);
-        navigate('/admin');
-      } else {
-        alert('Registration Error');
-      }
+      const response = await api.post('/auth/registerUserOwner', payload);
+      login(response.data.payload || response.data); 
+      navigate('/admin');
+      
     } catch (error) {
-      console.error(error);
+      console.error("Błąd rejestracji:", error);
+      alert(error.response?.data?.message || 'Wystąpił błąd podczas rejestracji');
     }
   };
 

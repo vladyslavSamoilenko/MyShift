@@ -54,6 +54,34 @@ CREATE TABLE shifts (
        CONSTRAINT fk_shift_employee FOREIGN KEY (employee_id) REFERENCES employee(id)
 );
 
+CREATE TABLE leave_requests (
+       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+       employee_id INT NOT NULL,
+       project_id INT NOT NULL,
+       start_date DATE NOT NULL,
+       end_date DATE NOT NULL,
+       type VARCHAR(50) NOT NULL,
+       status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+       reason VARCHAR(255),
+       created_at TIMESTAMP NOT NULL,
+       updated_at TIMESTAMP NOT NULL,
+
+       CONSTRAINT fk_leave_employee FOREIGN KEY (employee_id) REFERENCES employee(id),
+       CONSTRAINT fk_leave_project FOREIGN KEY (project_id) REFERENCES project(id)
+);
+CREATE TABLE availabilities (
+        id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+        employee_id INT NOT NULL,
+        day_of_week VARCHAR(20) NOT NULL,
+        start_time TIME NOT NULL,
+        end_time TIME NOT NULL,
+        created_at TIMESTAMP NOT NULL,
+        updated_at TIMESTAMP NOT NULL,
+
+        CONSTRAINT fk_availability_employee FOREIGN KEY (employee_id) REFERENCES employee(id),
+        CONSTRAINT unique_employee_day UNIQUE (employee_id, day_of_week)
+);
+
 CREATE TABLE refresh_token(
     id SERIAL PRIMARY KEY ,
     token VARCHAR(128) NOT NULL,

@@ -61,12 +61,13 @@ public class AuthServiceImplTest {
         RefreshToken mockRefreshToken = new RefreshToken();
         mockRefreshToken.setToken("refresh-token-123");
         UserProfileDTO mockProfile = new UserProfileDTO(
-                1,
-                "test@test.com",
-                10,
-                com.example.backend.model.enums.Role.ADMIN,
-                "access-token-123",
-                "refresh-token-123"
+                1,                                          // id
+                "test@test.com",                            // email
+                10,                                         // projectId
+                99,                                         // employeeId (ВОТ ОНО, НАШЕ НОВОЕ ПОЛЕ!)
+                com.example.backend.model.enums.Role.ADMIN, // role
+                "access-token-123",                         // token
+                "refresh-token-123"                         // refreshToken
         );
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);

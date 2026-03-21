@@ -48,12 +48,13 @@ public class AuthControllerTest {
         request.setPassword("password");
 
         UserProfileDTO mockProfile = new UserProfileDTO(
-                1,
-                "test@test.com",
-                10,
-                com.example.backend.model.enums.Role.ADMIN,
-                "fake-access-token",
-                "fake-refresh-token"
+                1,                                          // id
+                "test@test.com",                            // email
+                10,                                         // projectId
+                99,                                         // employeeId (ВОТ ОНО, НАШЕ НОВОЕ ПОЛЕ!)
+                com.example.backend.model.enums.Role.ADMIN, // role
+                "access-token-123",                         // token
+                "refresh-token-123"                         // refreshToken
         );
 
         GeneralResponse<UserProfileDTO> expectedResponse = GeneralResponse.createSuccessfulWithNewToken(mockProfile);
@@ -65,7 +66,7 @@ public class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.payload.token").value("fake-access-token"));
+                .andExpect(jsonPath("$.payload.token").value("access-token-123"));
     }
 
     @Test
@@ -73,7 +74,13 @@ public class AuthControllerTest {
         RegisterUserOwnerRequest request = new RegisterUserOwnerRequest();
 
         UserProfileDTO mockProfile = new UserProfileDTO(
-                1, "new@test.com", 10, com.example.backend.model.enums.Role.ADMIN, "new-token", "refresh-token"
+                1,                                          // id
+                "test@test.com",                            // email
+                10,                                         // projectId
+                99,                                         // employeeId (ВОТ ОНО, НАШЕ НОВОЕ ПОЛЕ!)
+                com.example.backend.model.enums.Role.ADMIN, // role
+                "access-token-123",                         // token
+                "refresh-token-123"                         // refreshToken
         );
 
         GeneralResponse<UserProfileDTO> expectedResponse = GeneralResponse.createSuccessfulWithNewToken(mockProfile);
@@ -84,7 +91,7 @@ public class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.payload.token").value("new-token"));
+                .andExpect(jsonPath("$.payload.token").value("access-token-123"));
     }
 
     @Test
@@ -92,7 +99,13 @@ public class AuthControllerTest {
         String oldRefreshToken = "old-refresh-123";
 
         UserProfileDTO mockProfile = new UserProfileDTO(
-                1, "test@test.com", 10, com.example.backend.model.enums.Role.ADMIN, "new-access-token", "old-refresh-123"
+                1,                                          // id
+                "test@test.com",                            // email
+                10,                                         // projectId
+                99,                                         // employeeId (ВОТ ОНО, НАШЕ НОВОЕ ПОЛЕ!)
+                com.example.backend.model.enums.Role.ADMIN, // role
+                "access-token-123",                         // token
+                "refresh-token-123"                         // refreshToken
         );
 
         GeneralResponse<UserProfileDTO> expectedResponse = GeneralResponse.createSuccessfulWithNewToken(mockProfile);
@@ -104,6 +117,6 @@ public class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.payload.token").value("new-access-token"));
+                .andExpect(jsonPath("$.payload.token").value("access-token-123"));
     }
 }

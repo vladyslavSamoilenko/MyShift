@@ -66,6 +66,7 @@ public class AuthServiceImpl implements AuthService {
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
         userProfileDTO.setProjectId(user.getProject().getId());
+        userProfileDTO.setEmployeeId(user.getEmployee() != null ? user.getEmployee().getId() : null);
         return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 
@@ -122,6 +123,7 @@ public class AuthServiceImpl implements AuthService {
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
         userProfileDTO.setProjectId(user.getProject().getId());
+        userProfileDTO.setEmployeeId(savedEmployee.getId());
         return GeneralResponse.createSuccessfulWithNewToken(userProfileDTO);
     }
 
